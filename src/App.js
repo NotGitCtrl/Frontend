@@ -1,8 +1,8 @@
 import "./App.css";
-import Login from "./Components/Login";
+import SignUpStepper from "./Components/Stepper/Stepper";
 
 function App() {
-  return <Login />;
+  return <SignUpStepper />;
 }
 
 export default App;
