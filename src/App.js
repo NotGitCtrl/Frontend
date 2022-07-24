@@ -1,12 +1,8 @@
 import "./App.css";
-import SignUpStepper from "./Components/Stepper/Stepper";
-import Login from "./Components/Login/Login";
-import ForgotPass from "./Components/ForgotPassword/ForgotPass";
+import Login from "./Components/Login";
 
 function App() {
-  return <ForgotPass />;
-  // return <Login />;
-  // return <SignUpStepper />;
+  return <Login />;
 }
 
 export default App;
