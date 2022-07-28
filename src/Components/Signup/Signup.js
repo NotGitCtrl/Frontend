@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -37,10 +38,25 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userData = {
+      name: data.get("firstname"),
+      surname: data.get("surname"),
+      gender: data.get("gender"),
+      birthDate: data.get("dob"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+    console.log(userData);
+    axios
+      .post("http://localhost:5000/auth/create_user", userData)
+      .then((response) => {
+        console.log(response);
+        localStorage.setItem("email", response.data.data.email);
+        localStorage.setItem("userId", response.data.data.userId);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   };
 
   return (
@@ -49,7 +65,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 3,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -71,7 +87,7 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="firstname"
                   required
                   fullWidth
                   id="firstName"
@@ -83,19 +99,28 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
+                  id="surname"
                   label="Last Name"
-                  name="lastName"
+                  name="surname"
                   autoComplete="family-name"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  id="mobileno"
-                  label="Mobile No."
-                  name="mobileno"
+                  id="dob"
+                  label="Date Of Birth"
+                  name="dob"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="gender"
+                  label="Gender"
+                  name="gender"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,14 +153,6 @@ export default function SignUp() {
                   type="password"
                   id="confirmpassword"
                   autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>

@@ -4,9 +4,9 @@ import Login from "./Components/Login/Login";
 import ForgotPass from "./Components/ForgotPassword/ForgotPass";
 
 function App() {
-  return <ForgotPass />;
+  // return <ForgotPass />;
   // return <Login />;
-  // return <SignUpStepper />;
+  return <SignUpStepper />;
 }
 
 export default App;
