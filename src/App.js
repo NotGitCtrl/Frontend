@@ -5,8 +5,8 @@ import ForgotPass from "./Components/ForgotPassword/ForgotPass";
 
 function App() {
   // return <ForgotPass />;
-  // return <Login />;
-  return <SignUpStepper />;
+  return <Login />;
+  // return <SignUpStepper />;
 }
 
 export default App;
