@@ -10,7 +10,6 @@ const OtpInput = () => {
       userId: localStorage.getItem("userId"),
       otp: data.get("otp"),
     };
-    console.log(otpData);
     axios
       .post("http://localhost:5000/auth/verifyOTP", otpData)
       .then((response) => console.log(response))
@@ -21,7 +20,6 @@ const OtpInput = () => {
 
   const handleResend = (event) => {
     event.preventDefault();
-    console.log("in here");
     const resendData = {
       userId: localStorage.getItem("userId"),
       email: localStorage.getItem("email"),
