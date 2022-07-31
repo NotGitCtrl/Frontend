@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { Token } from "../../Context";
+import { useNavigate, Navigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -36,6 +37,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  let navigate = useNavigate();
   const { token, setToken } = React.useContext(Token);
 
   const handleSubmit = (event) => {
@@ -49,6 +51,11 @@ export default function Login() {
       .post("http://localhost:5000/auth/login", loginData)
       .then((response) => {
         setToken(response.data.data);
+        console.log(response);
+        console.log(response.data.data);
+        if (response.data.status === "success") {
+          navigate("/profile", { replace: true });
+        }
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -118,7 +125,7 @@ export default function Login() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

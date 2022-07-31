@@ -1,6 +1,7 @@
 import "./App.css";
 import SignUpStepper from "./Components/Stepper/Stepper";
 import Login from "./Components/Login/Login";
+import Profile from "./Components/Profile/Profile";
 import ForgotPass from "./Components/ForgotPassword/ForgotPass";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SignUpStepper />} />
         <Route path="login" element={<Login />} />
+        <Route path="profile" element={<Profile auth={false} />} />
       </Routes>
     </BrowserRouter>
   );
