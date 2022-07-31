@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+import { Token } from "../../Context";
 
 function Copyright(props) {
   return (
@@ -34,13 +36,23 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const { token, setToken } = React.useContext(Token);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const loginData = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+    axios
+      .post("http://localhost:5000/auth/login", loginData)
+      .then((response) => {
+        setToken(response.data.data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   };
 
   return (

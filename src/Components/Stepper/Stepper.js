@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
 import SignUp from "../Signup/Signup";
+import OtpInput from "../OtpInput/OtpInput";
 
 const steps = [
   "Select campaign settings",
@@ -55,9 +56,7 @@ export default function SignUpStepper() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Typography textAlign="center" sx={{ mt: 2, mb: 1 }}>
-            {activeStep === 0 ? <SignUp /> : `Step ${activeStep + 1}`}
-          </Typography>
+          <Container>{activeStep === 0 ? <SignUp /> : <OtpInput />}</Container>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
