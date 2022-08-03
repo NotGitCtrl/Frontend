@@ -3,15 +3,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../api/services/auth";
+import { Link } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -22,7 +22,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}
@@ -35,7 +35,7 @@ const theme = createTheme();
 
 export default function SignUp() {
   let navigate = useNavigate();
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
@@ -46,17 +46,10 @@ export default function SignUp() {
       email: data.get("email"),
       password: data.get("password"),
     };
-    axios
-      .post("http://localhost:5000/auth/create_user", userData)
-      .then((response) => {
-        console.log(response);
-        localStorage.setItem("email", response.data.data.email);
-        localStorage.setItem("userId", response.data.data.userId);
-        navigate("/profile", { replace: true });
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    const response = await registerUser(userData);
+    if (response) {
+      navigate("/login");
+    }
   };
 
   return (
@@ -166,7 +159,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link to="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

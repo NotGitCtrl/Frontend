@@ -5,16 +5,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
-import { Token } from "../../Context";
-import { useNavigate, Navigate } from "react-router-dom";
+import { AppContext } from "../../context/Context";
+import { useNavigate } from "react-router-dom";
+import { setStorage } from "../../utils/localstorage-utils";
+import { loginUser } from "../../api/services/auth";
+import { Link } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -25,7 +26,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}
@@ -38,28 +39,21 @@ const theme = createTheme();
 
 export default function Login() {
   let navigate = useNavigate();
-  const { token, setToken } = React.useContext(Token);
+  const { setIsLoggedIn } = React.useContext(AppContext);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const loginData = {
       email: data.get("email"),
       password: data.get("password"),
     };
-    axios
-      .post("http://localhost:5000/auth/login", loginData)
-      .then((response) => {
-        setToken(response.data.data);
-        console.log(response);
-        console.log(response.data.data);
-        if (response.data.status === "success") {
-          navigate("/profile", { replace: true });
-        }
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    const response = await loginUser(loginData);
+    if (response.status === "success") {
+      setStorage("user_token", response.data);
+      setIsLoggedIn(true);
+      navigate("/profile");
+    }
   };
 
   return (
@@ -120,12 +114,10 @@ export default function Login() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+                <Link to="/forgot-password">Forgot password?</Link>
               </Grid>
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link to="/" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
