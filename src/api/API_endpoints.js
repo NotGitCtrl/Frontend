@@ -3,15 +3,19 @@ export const API_endpoints = {
   loginUser: "/auth/login",
   registerUser: "/auth/register",
   // countries
-  getAllCountries: "/countries",
-  addCountry: "/countries/add",
+  getAllCountries: "/api/country",
+  addCountry: "/api/country",
   showCountry: "/coutries/show",
-  updateCountry: "/countries/update",
-  deleteCountry: "/countries/delete",
+  updateCountry: "/api/country/:id",
+  deleteCountry: "/api/country/:id",
   // states
-  getAllStates: "/states",
-  addState: "/states/add",
-  showState: "/states/show",
-  updateState: "/states/update",
-  deleteState: "/states/delete",
+  getAllStates: "/api/state",
+  addState: "/api/state",
+  showState: "/api/state/:id",
+  editState: "/api/state/:id/edit",
+  updateState: "/api/state/:id",
+  deleteState: "/api/state/:id",
+  //districts
+  getAllDistricts: "/api/district",
+  addDistrict: "/api/district",
 };
