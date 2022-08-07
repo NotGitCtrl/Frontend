@@ -1,6 +1,6 @@
 import { Box, TextField, Button, Grid } from "@mui/material";
 import React, { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 const OtpInput = () => {
   const handleSubmit = (event) => {
@@ -10,12 +10,12 @@ const OtpInput = () => {
       userId: localStorage.getItem("userId"),
       otp: data.get("otp"),
     };
-    axios
-      .post("http://localhost:5000/auth/verifyOTP", otpData)
-      .then((response) => console.log(response))
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    // axios
+    //   .post("http://localhost:5000/auth/verifyOTP", otpData)
+    //   .then((response) => console.log(response))
+    //   .catch((error) => {
+    //     console.error("There was an error!", error);
+    //   });
   };
 
   const handleResend = (event) => {
