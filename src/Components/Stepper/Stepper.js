@@ -6,8 +6,8 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
-import SignUp from "../Signup/Signup";
-import OtpInput from "../OtpInput/OtpInput";
+import SignUp from "../../pages/auth/Signup";
+import OtpInput from "../../pages/auth/OtpInput";
 
 const steps = [
   "Select campaign settings",
