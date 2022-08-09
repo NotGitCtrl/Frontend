@@ -29,4 +29,16 @@ export const API_endpoints = {
   deleteUniversity: "/api/universities",
   //users
   getUniAdmins: "/api/users/list",
+  getHeiAdmins: "/api/users/list",
+  getFAAdmins: "/api/users/list",
+  // heis
+  getAllHeis: "/api/admin/hei",
+  addHei: "/api/admin/hei",
+  updateHei: "/api/admin/hei",
+  deleteHei: "/api/admin/hei",
+  // fas
+  getAllFAs: "/api/admin/funding-agency",
+  addFA: "/api/admin/funding-agency",
+  updateFA: "/api/admin/funding-agency",
+  deleteFA: "/api/admin/funding-agency",
 };

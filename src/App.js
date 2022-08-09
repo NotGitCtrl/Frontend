@@ -7,9 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Countries from "./pages/baseTables/Countries";
 import States from "./pages/baseTables/States";
 import Districts from "./pages/baseTables/Districts";
-import Table from "./Components/common/TableComponent";
 import Streams from "./pages/baseTables/Streams";
 import Universities from "./pages/baseTables/Universities";
+import Hei from "./pages/Hei";
+import FA from "./pages/FA";
 
 function App() {
   // return <ForgotPass />;
@@ -30,7 +31,8 @@ function App() {
         <Route path="/dashboard/streams" element={<Streams />} />
         <Route path="/dashboard/universities" element={<Universities />} />
 
-        <Route path="/table" element={<Table />} />
+        <Route path="/admin/hei" element={<Hei />} />
+        <Route path="/admin/fa" element={<FA />} />
       </Routes>
     </BrowserRouter>
   );

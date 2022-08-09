@@ -45,7 +45,6 @@ export default function Streams() {
   };
 
   const convertCoursesToArray = (courses) => {
-    console.log(courses);
     return courses.split(",").map((c) => c.trim());
   };
 
