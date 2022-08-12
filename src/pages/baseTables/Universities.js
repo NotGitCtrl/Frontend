@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../../Components/common/ConfirmationModal";
-import { getAllCountries } from "../../api/services/countries";
-import { addDistrict, getAllDistricts } from "../../api/services/districts";
+import { getUniAdmins } from "../../api/services/users";
+import {
+  addUniversity,
+  deleteUniversity,
+  getAllUniversities,
+  updateUniversity,
+} from "../../api/services/universities";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -24,85 +29,73 @@ import Select from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Typography } from "@mui/material";
-import { getAllStates } from "../../api/services/states";
 import DashboardWrapper from "../../Components/common/DashboardWrapper";
 
-export default function Districts() {
-  const [districts, setDistricts] = useState(undefined);
-  const [district, setDistrict] = useState("");
-  const [countries, setCountries] = useState(undefined);
-  const [country, setCountry] = useState("");
-  const [states, setStates] = useState(undefined);
-  const [state, setState] = useState("");
-  const [selectedDistrictId, setSelectedDistrictId] = useState("");
+export default function Universities() {
+  const [universities, setUniversities] = useState(undefined);
+  const [university, setUniversity] = useState("");
+  const [uniAdmins, setUniAdmins] = useState(undefined);
+  const [uniAdminId, setUniAdminId] = useState("");
+  const [selectedUniversityId, setSelectedUniversityId] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEyeModal, setShowEyeModal] = useState(false);
 
-  const fetchAllDistricts = async () => {
-    const response = await getAllDistricts();
+  const fetchAllUniversities = async () => {
+    const response = await getAllUniversities();
     if (response.status === "success") {
-      setDistricts(response.data);
+      setUniversities(response.data);
     }
   };
 
-  const fetchAllCountries = async () => {
-    const response = await getAllCountries();
+  const fetchAllUniAdmins = async () => {
+    const response = await getUniAdmins();
     if (response.status === "success") {
-      setCountries(response.data);
-    }
-  };
-
-  const fetchAllStates = async () => {
-    const response = await getAllStates();
-    if (response.status === "success") {
-      setStates(response.data);
+      setUniAdmins(response.data);
     }
   };
 
   const handleAdd = async () => {
-    const response = await addDistrict({ state_id: state, name: district });
+    const response = await addUniversity({
+      name: university,
+      admin: uniAdminId,
+    });
     if (response.status === "success") {
-      setDistrict("");
-      setState("");
+      setUniversity("");
+      setUniAdminId("");
       setShowAddModal(false);
-      fetchAllDistricts();
+      fetchAllUniversities();
     }
   };
 
   const handleUpdate = async () => {
-    const response = await updateState({ id: selectedStateId, state });
+    const response = await updateUniversity(selectedUniversityId, {
+      name: university,
+      admin: uniAdminId,
+    });
     if (response.status === "success") {
-      setDistrict("");
-      setCountry("");
-      setSelectedStateId("");
+      setUniversity("");
+      setUniAdminId("");
+      setSelectedUniversityId("");
       setShowEditModal(false);
-      fetchAllDistricts();
+      fetchAllUniversities();
     }
   };
 
   const handleDelete = async () => {
-    const response = await deleteState({ id: selectedStateId });
+    const response = await deleteUniversity(selectedUniversityId);
     if (response.status === "success") {
+      setUniversity("");
+      setUniAdminId("");
+      setSelectedUniversityId("");
       setShowDeleteModal(false);
-      setDistrict("");
-      fetchAllDistricts();
-    }
-  };
-
-  const stateDetails = async () => {
-    const response = await showState({ id: selectedStateId });
-    console.log(selectedStateId);
-    if (response.status === "success") {
+      fetchAllUniversities();
     }
   };
 
   useEffect(() => {
-    fetchAllDistricts();
-    fetchAllStates();
+    fetchAllUniversities();
+    fetchAllUniAdmins();
   }, []);
 
   return (
@@ -114,11 +107,11 @@ export default function Districts() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Districts</h2>
+          <h2>Universities</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add District
+            Add University
           </Button>
         </Grid>
       </Grid>
@@ -132,8 +125,8 @@ export default function Districts() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {districts &&
-              districts.map((row, index) => (
+            {universities &&
+              universities.map((row, index) => (
                 <TableRow
                   key={row._id}
                   sx={{
@@ -149,8 +142,9 @@ export default function Districts() {
                     <IconButton
                       onClick={() => {
                         setShowEditModal(true);
-                        setDistrict(row.name);
-                        setSelectedStateId(row._id);
+                        setUniversity(row.name);
+                        setSelectedUniversityId(row._id);
+                        setUniAdminId(row.admin);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -158,20 +152,11 @@ export default function Districts() {
                     <IconButton
                       onClick={() => {
                         setShowDeleteModal(true);
-                        setDistrict(row.name);
-                        setSelectedStateId(row._id);
+                        setUniversity(row.name);
+                        setSelectedUniversityId(row._id);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setShowEyeModal(true);
-                        setDistrict(row.name);
-                        setSelectedStateId(row._id);
-                      }}
-                    >
-                      <VisibilityIcon fontSize="small" />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -184,37 +169,38 @@ export default function Districts() {
         open={showAddModal}
         onClose={() => {
           setShowAddModal(false);
-          setDistrict("");
+          setUniversity("");
+          setUniAdminId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add District</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Add University</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="District"
+            label="University"
             type="text"
-            value={district}
-            onChange={(e) => setDistrict(e.target.value)}
+            value={university}
+            onChange={(e) => setUniversity(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">Admin</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="State"
-              defaultValue=""
-              onChange={(e) => setState(e.target.value)}
+              value={uniAdminId}
+              label="Admin"
+              onChange={(e) => setUniAdminId(e.target.value)}
             >
-              {states &&
-                states.map((state) => (
-                  <MenuItem key={state._id} value={state._id}>
-                    {state.name}
+              {uniAdmins &&
+                uniAdmins.map((uniAdmin) => (
+                  <MenuItem key={uniAdmin._id} value={uniAdmin._id}>
+                    {uniAdmin.firstName + uniAdmin.lastName}
                   </MenuItem>
                 ))}
             </Select>
@@ -224,13 +210,15 @@ export default function Districts() {
           <Button
             onClick={() => {
               setShowAddModal(false);
-              setDistrict("");
-              setState("");
+              setUniversity("");
+              setUniAdminId("");
             }}
           >
             Cancel
           </Button>
-          <Button onClick={handleAdd}>Add</Button>
+          <Button onClick={handleAdd} disabled={!university || !uniAdminId}>
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -238,37 +226,38 @@ export default function Districts() {
         open={showEditModal}
         onClose={() => {
           setShowEditModal(false);
-          setDistrict("");
+          setUniversity("");
+          setUniAdminId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit District</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Edit University</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="District"
+            label="University"
             type="text"
-            value={district}
-            onChange={(e) => setDistrict(e.target.value)}
+            value={university}
+            onChange={(e) => setUniversity(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">Admin</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              defaultValue=""
-              label="State"
-              onChange={(e) => setState(e.target.value)}
+              value={uniAdminId}
+              label="Admin"
+              onChange={(e) => setUniAdminId(e.target.value)}
             >
-              {states &&
-                states.map((state) => (
-                  <MenuItem key={state._id} value={state._id}>
-                    {state.name}
+              {uniAdmins &&
+                uniAdmins.map((uniAdmin) => (
+                  <MenuItem key={uniAdmin._id} value={uniAdmin._id}>
+                    {uniAdmin.firstName + uniAdmin.lastName}
                   </MenuItem>
                 ))}
             </Select>
@@ -278,49 +267,22 @@ export default function Districts() {
           <Button
             onClick={() => {
               setShowEditModal(false);
-              setDistrict("");
+              setUniversity("");
+              setUniAdminId("");
             }}
           >
             Cancel
           </Button>
-          <Button onClick={handleUpdate}>Save</Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        open={showEyeModal}
-        onClose={() => {
-          setShowEyeModal(false);
-        }}
-        fullWidth={true}
-        maxWidth="xs"
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle style={{ paddingBottom: 0 }}>District Details</DialogTitle>
-
-        <DialogContent dividers>
-          <Typography gutterBottom>District: {district}</Typography>
-          <Typography gutterBottom>State: {state}</Typography>
-          <Typography gutterBottom>Country: {country}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              setShowEyeModal(false);
-            }}
-          >
-            Cancel
+          <Button onClick={handleUpdate} disabled={!university || !uniAdminId}>
+            Save
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this district?"
-        handleClose={() => {
-          setShowDeleteModal(false);
-        }}
+        message="Are you sure you want to delete this state?"
+        handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />
     </DashboardWrapper>

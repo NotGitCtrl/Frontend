@@ -51,10 +51,7 @@ export default function Countries() {
   };
 
   const handleUpdate = async () => {
-    const response = await updateCountry({
-      id: selectedCountryId,
-      name: country,
-    });
+    const response = await updateCountry(selectedCountryId, { name: country });
     if (response.status === "success") {
       setCountry("");
       setSelectedCountryId("");
@@ -64,8 +61,10 @@ export default function Countries() {
   };
 
   const handleDelete = async () => {
-    const response = await deleteCountry({ id: selectedCountryId });
+    const response = await deleteCountry(selectedCountryId);
     if (response.status === "success") {
+      setCountry("");
+      setSelectedCountryId("");
       setShowDeleteModal(false);
       fetchAllCountries();
     }
@@ -173,7 +172,9 @@ export default function Countries() {
           >
             Cancel
           </Button>
-          <Button onClick={handleAdd}>Add</Button>
+          <Button onClick={handleAdd} disabled={!country}>
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -209,7 +210,9 @@ export default function Countries() {
           >
             Cancel
           </Button>
-          <Button onClick={handleUpdate}>Save</Button>
+          <Button onClick={handleUpdate} disabled={!country}>
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
 

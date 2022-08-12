@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../../Components/common/ConfirmationModal";
-import { getAllCountries } from "../../api/services/countries";
+import { getAllStates } from "../../api/services/states";
 import {
-  addState,
-  deleteState,
-  getAllStates,
-  updateState,
-  showState,
-  editState,
-} from "../../api/services/states";
+  getAllDistricts,
+  addDistrict,
+  updateDistrict,
+  deleteDistrict,
+} from "../../api/services/districts";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -31,21 +29,24 @@ import Select from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Typography } from "@mui/material";
 import DashboardWrapper from "../../Components/common/DashboardWrapper";
 
-export default function States() {
+export default function Districts() {
+  const [districts, setDistricts] = useState(undefined);
+  const [district, setDistrict] = useState("");
   const [states, setStates] = useState(undefined);
-  const [state, setState] = useState("");
-  const [countries, setCountries] = useState(undefined);
-  const [country, setCountry] = useState("");
-  const [selectedStateId, setSelectedStateId] = useState("");
-  const [selectedStateCountry, setSelectedStateCountry] = useState("");
+  const [stateId, setStateId] = useState("");
+  const [selectedDistrictId, setSelectedDistrictId] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEyeModal, setShowEyeModal] = useState(false);
+
+  const fetchAllDistricts = async () => {
+    const response = await getAllDistricts();
+    if (response.status === "success") {
+      setDistricts(response.data);
+    }
+  };
 
   const fetchAllStates = async () => {
     const response = await getAllStates();
@@ -54,66 +55,44 @@ export default function States() {
     }
   };
 
-  const fetchAllCountries = async () => {
-    const response = await getAllCountries();
-    if (response.status === "success") {
-      setCountries(response.data);
-    }
-  };
-
   const handleAdd = async () => {
-    const response = await addState({ country_id: country, name: state });
+    const response = await addDistrict({ name: district, state_id: stateId });
     if (response.status === "success") {
-      setState("");
-      setCountry("");
+      setDistrict("");
+      setStateId("");
       setShowAddModal(false);
-      fetchAllStates();
+      fetchAllDistricts();
     }
   };
 
   const handleUpdate = async () => {
-    const response = await updateState({
-      id: selectedStateId,
-      country,
-      name: state,
+    const response = await updateDistrict(selectedDistrictId, {
+      name: district,
+      state_id: stateId,
     });
     if (response.status === "success") {
-      setState("");
-      setCountry("");
-      setSelectedStateId("");
+      setDistrict("");
+      setStateId("");
+      setSelectedDistrictId("");
       setShowEditModal(false);
-      fetchAllStates();
+      fetchAllDistricts();
     }
   };
 
   const handleDelete = async () => {
-    const response = await deleteState({ id: selectedStateId });
+    const response = await deleteDistrict(selectedDistrictId);
     if (response.status === "success") {
+      setDistrict("");
+      setStateId("");
+      setSelectedDistrictId("");
       setShowDeleteModal(false);
-      setState("");
-      fetchAllStates();
-    }
-  };
-
-  // const editState = async (stateid) => {
-  //   console.log(stateid);
-  //   const response = await editState({ id: stateid });
-  //   if (response.status === "success") {
-  //     setSelectedStateCountry(response.data.country.name);
-  //   }
-  // };
-
-  const eyeModal = async (stateid) => {
-    console.log(stateid);
-    const response = await showState({ id: stateid });
-    if (response.status === "success") {
-      setSelectedStateCountry(response.data.country.name);
+      fetchAllDistricts();
     }
   };
 
   useEffect(() => {
+    fetchAllDistricts();
     fetchAllStates();
-    fetchAllCountries();
   }, []);
 
   return (
@@ -125,11 +104,11 @@ export default function States() {
         alignItems="center"
       >
         <Grid item>
-          <h2>States</h2>
+          <h2>Districts</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add State
+            Add District
           </Button>
         </Grid>
       </Grid>
@@ -143,8 +122,8 @@ export default function States() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {states &&
-              states.map((row, index) => (
+            {districts &&
+              districts.map((row, index) => (
                 <TableRow
                   key={row._id}
                   sx={{
@@ -160,9 +139,9 @@ export default function States() {
                     <IconButton
                       onClick={() => {
                         setShowEditModal(true);
-                        setState(row.name);
-                        setSelectedStateId(row._id);
-                        editState(row._id);
+                        setDistrict(row.name);
+                        setSelectedDistrictId(row._id);
+                        setStateId(row.state);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -170,20 +149,11 @@ export default function States() {
                     <IconButton
                       onClick={() => {
                         setShowDeleteModal(true);
-                        setState(row.name);
-                        setSelectedStateId(row._id);
+                        setDistrict(row.name);
+                        setSelectedDistrictId(row._id);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setShowEyeModal(true);
-                        setState(row.name);
-                        eyeModal(row._id);
-                      }}
-                    >
-                      <VisibilityIcon fontSize="small" />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -196,37 +166,38 @@ export default function States() {
         open={showAddModal}
         onClose={() => {
           setShowAddModal(false);
-          setState("");
+          setDistrict("");
+          setStateId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add State</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Add District</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="State"
+            label="District"
             type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            value={district}
+            onChange={(e) => setDistrict(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">State</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              value={stateId}
               label="Country"
-              defaultValue=""
-              onChange={(e) => setCountry(e.target.value)}
+              onChange={(e) => setStateId(e.target.value)}
             >
-              {countries &&
-                countries.map((country) => (
-                  <MenuItem key={country._id} value={country._id}>
-                    {country.name}
+              {states &&
+                states.map((state) => (
+                  <MenuItem key={state._id} value={state._id}>
+                    {state.name}
                   </MenuItem>
                 ))}
             </Select>
@@ -236,13 +207,15 @@ export default function States() {
           <Button
             onClick={() => {
               setShowAddModal(false);
-              setState("");
-              setCountry("");
+              setDistrict("");
+              setStateId("");
             }}
           >
             Cancel
           </Button>
-          <Button onClick={handleAdd}>Add</Button>
+          <Button onClick={handleAdd} disabled={!district || !stateId}>
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -250,37 +223,38 @@ export default function States() {
         open={showEditModal}
         onClose={() => {
           setShowEditModal(false);
-          setState("");
+          setDistrict("");
+          setStateId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit State</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Edit District</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="State"
+            label="District"
             type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            value={district}
+            onChange={(e) => setDistrict(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">State</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={country}
+              value={stateId}
               label="Country"
-              onChange={(e) => setCountry(e.target.value)}
+              onChange={(e) => setStateId(e.target.value)}
             >
-              {countries &&
-                countries.map((country) => (
-                  <MenuItem key={country._id} value={country._id}>
-                    {country.name}
+              {states &&
+                states.map((state) => (
+                  <MenuItem key={state._id} value={state._id}>
+                    {state.name}
                   </MenuItem>
                 ))}
             </Select>
@@ -290,50 +264,22 @@ export default function States() {
           <Button
             onClick={() => {
               setShowEditModal(false);
-              setState("");
+              setDistrict("");
+              setStateId("");
             }}
           >
             Cancel
           </Button>
-          <Button onClick={handleUpdate}>Save</Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        open={showEyeModal}
-        onClose={() => {
-          setShowEyeModal(false);
-          setSelectedStateCountry("");
-        }}
-        fullWidth={true}
-        maxWidth="xs"
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle style={{ paddingBottom: 0 }}>State Details</DialogTitle>
-
-        <DialogContent dividers>
-          <Typography gutterBottom>State: {state}</Typography>
-          <Typography gutterBottom>Country: {selectedStateCountry}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              setShowEyeModal(false);
-              setSelectedStateCountry("");
-            }}
-          >
-            Cancel
+          <Button onClick={handleUpdate} disabled={!district || !stateId}>
+            Save
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this state?"
-        handleClose={() => {
-          setShowDeleteModal(false);
-        }}
+        message="Are you sure you want to delete this district?"
+        handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />
     </DashboardWrapper>

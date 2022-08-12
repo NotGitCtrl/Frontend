@@ -1,10 +1,10 @@
 import interceptor from "../interceptor";
 import { API_endpoints } from "../API_endpoints";
 
-function getAllDistricts() {
+function getAllStreams() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.getAllDistricts, "GET");
+      const response = await interceptor(API_endpoints.getAllStreams, "GET");
       resolve(response);
     } catch (err) {
       reject(err);
@@ -12,10 +12,10 @@ function getAllDistricts() {
   });
 }
 
-function addDistrict(body) {
+function addStream(body) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.addDistrict, "POST", body);
+      const response = await interceptor(API_endpoints.addStream, "POST", body);
       resolve(response);
     } catch (err) {
       reject(err);
@@ -23,10 +23,14 @@ function addDistrict(body) {
   });
 }
 
-function updateDistrict(id, body) {
+function updateStream(id, body) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.updateDistrict + "/" + id, "PUT", body);
+      const response = await interceptor(
+        API_endpoints.updateStream + "/" + id,
+        "PUT",
+        body
+      );
       resolve(response);
     } catch (err) {
       reject(err);
@@ -34,10 +38,13 @@ function updateDistrict(id, body) {
   });
 }
 
-function deleteDistrict(id) {
+function deleteStream(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.deleteDistrict + "/" + id, "DELETE");
+      const response = await interceptor(
+        API_endpoints.deleteStream + "/" + id,
+        "DELETE"
+      );
       resolve(response);
     } catch (err) {
       reject(err);
@@ -45,4 +52,4 @@ function deleteDistrict(id) {
   });
 }
 
-export { getAllDistricts, addDistrict, updateDistrict, deleteDistrict };
+export { getAllStreams, addStream, updateStream, deleteStream };

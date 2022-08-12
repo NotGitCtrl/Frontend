@@ -1,10 +1,13 @@
 import interceptor from "../interceptor";
 import { API_endpoints } from "../API_endpoints";
 
-function getAllCountries() {
+function getAllUniversities() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.getAllCountries, "GET");
+      const response = await interceptor(
+        API_endpoints.getAllUniversities,
+        "GET"
+      );
       resolve(response);
     } catch (err) {
       reject(err);
@@ -12,11 +15,11 @@ function getAllCountries() {
   });
 }
 
-function addCountry(body) {
+function addUniversity(body) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.addCountry,
+        API_endpoints.addUniversity,
         "POST",
         body
       );
@@ -27,11 +30,11 @@ function addCountry(body) {
   });
 }
 
-function updateCountry(id, body) {
+function updateUniversity(id, body) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.updateCountry + "/" + id,
+        API_endpoints.updateUniversity + "/" + id,
         "PUT",
         body
       );
@@ -42,11 +45,11 @@ function updateCountry(id, body) {
   });
 }
 
-function deleteCountry(id) {
+function deleteUniversity(id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.deleteCountry + "/" + id,
+        API_endpoints.deleteUniversity + "/" + id,
         "DELETE"
       );
       resolve(response);
@@ -56,4 +59,9 @@ function deleteCountry(id) {
   });
 }
 
-export { getAllCountries, addCountry, updateCountry, deleteCountry };
+export {
+  getAllUniversities,
+  addUniversity,
+  updateUniversity,
+  deleteUniversity,
+};

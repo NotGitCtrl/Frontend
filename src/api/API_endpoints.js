@@ -1,21 +1,44 @@
 export const API_endpoints = {
   // auth
-  loginUser: "/auth/login",
-  registerUser: "/auth/register",
+  loginUser: "/api/login",
+  registerUser: "/api/register",
   // countries
-  getAllCountries: "/api/country",
-  addCountry: "/api/country",
-  showCountry: "/coutries/show",
-  updateCountry: "/api/country/:id",
-  deleteCountry: "/api/country/:id",
+  getAllCountries: "/api/countries",
+  addCountry: "/api/countries",
+  updateCountry: "/api/countries",
+  deleteCountry: "/api/countries",
   // states
-  getAllStates: "/api/state",
-  addState: "/api/state",
-  showState: "/api/state/:id",
-  editState: "/api/state/:id/edit",
-  updateState: "/api/state/:id",
-  deleteState: "/api/state/:id",
-  //districts
-  getAllDistricts: "/api/district",
-  addDistrict: "/api/district",
+  getAllStates: "/api/states",
+  addState: "/api/states",
+  updateState: "/api/states",
+  deleteState: "/api/states",
+  // districts
+  getAllDistricts: "/api/districts",
+  addDistrict: "/api/districts",
+  updateDistrict: "/api/districts",
+  deleteDistrict: "/api/districts",
+  // streams
+  getAllStreams: "/api/streams",
+  addStream: "/api/streams",
+  updateStream: "/api/streams",
+  deleteStream: "/api/streams",
+  // streams
+  getAllUniversities: "/api/universities",
+  addUniversity: "/api/universities",
+  updateUniversity: "/api/universities",
+  deleteUniversity: "/api/universities",
+  //users
+  getUniAdmins: "/api/users/list",
+  getHeiAdmins: "/api/users/list",
+  getFAAdmins: "/api/users/list",
+  // heis
+  getAllHeis: "/api/admin/hei",
+  addHei: "/api/admin/hei",
+  updateHei: "/api/admin/hei",
+  deleteHei: "/api/admin/hei",
+  // fas
+  getAllFAs: "/api/admin/funding-agency",
+  addFA: "/api/admin/funding-agency",
+  updateFA: "/api/admin/funding-agency",
+  deleteFA: "/api/admin/funding-agency",
 };

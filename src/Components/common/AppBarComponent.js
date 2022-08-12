@@ -71,11 +71,11 @@ export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
           >
             Dashboard
           </Typography>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <IconButton
             color="inherit"
             onClick={() => setShowLogoutDialog(true)}
