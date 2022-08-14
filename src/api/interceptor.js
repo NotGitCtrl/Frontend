@@ -3,7 +3,7 @@ import { getStorage } from "../utils/localstorage-utils";
 export default async function interceptor(endpoint, method = "GET", body = {}) {
   const baseUrl = process.env.REACT_APP_SERVER_URL;
   const contentType = "application/json";
-  let token = getStorage("token");
+  let token = getStorage("user_token");
 
   const reqOptions = {
     method,
