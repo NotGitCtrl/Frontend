@@ -11,6 +11,8 @@ import Streams from "./pages/baseTables/Streams";
 import Universities from "./pages/baseTables/Universities";
 import Hei from "./pages/Hei";
 import FA from "./pages/FA";
+import Schemes from "./pages/Schemes";
+import Transactions from "./pages/Transactions";
 
 function App() {
   // return <ForgotPass />;
@@ -30,6 +32,8 @@ function App() {
         <Route path="/dashboard/districts" element={<Districts />} />
         <Route path="/dashboard/streams" element={<Streams />} />
         <Route path="/dashboard/universities" element={<Universities />} />
+        <Route path="/dashboard/schemes" element={<Schemes />} />
+        <Route path="/dashboard/transactions" element={<Transactions />} />
 
         <Route path="/admin/hei" element={<Hei />} />
         <Route path="/admin/fa" element={<FA />} />

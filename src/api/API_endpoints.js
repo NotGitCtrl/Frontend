@@ -41,4 +41,12 @@ export const API_endpoints = {
   addFA: "/api/admin/funding-agency",
   updateFA: "/api/admin/funding-agency",
   deleteFA: "/api/admin/funding-agency",
+  // schemes
+  getAllSchemes: "/api/schemes",
+  addScheme: "/api/schemes",
+  // transactions
+  getAllTransactions: "/api/transactions",
+  addTransaction: "/api/transactions",
+  updateTransaction: "/api/transactions",
+  deleteTransaction: "/api/transactions",
 };

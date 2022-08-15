@@ -50,7 +50,6 @@ export default function Login() {
     };
     const response = await loginUser(loginData);
     if (response.token !== null) {
-      console.log(response)
       setStorage("user_token", response.token);
       setIsLoggedIn(true);
       navigate("/profile");
