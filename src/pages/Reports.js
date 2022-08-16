@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../Components/common/ConfirmationModal";
-import { getAllStates } from "../api/services/states";
+import { getAllPhases } from "../api/services/phases";
 import {
-  getAllTransactions,
-  addTransaction,
-  updateTransaction,
-  deleteTransaction,
-} from "../api/services/transactions";
+  getAllReports,
+  addReport,
+  updateReport,
+  deleteReport,
+} from "../api/services/reports";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -30,92 +30,92 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
+import { Input } from "@mui/material";
 
-export default function Transactions() {
-  const [transactions, setTransactions] = useState(undefined);
-  const [transaction, setTransaction] = useState("");
+export default function Reports() {
+  const [reports, setReports] = useState(undefined);
+  const [report, setReport] = useState("");
   const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [utr, setUtr] = useState("");
+  const [remarks, setRemarks] = useState("");
+  const [phases, setPhases] = useState(undefined);
+  const [phaseId, setPhaseId] = useState("");
 
-  const [projects, setProjects] = useState(undefined);
-  const [projectId, setProjectId] = useState("");
+  const [docs, setDocs] = useState(undefined);
 
-  const [selectedTransactionId, setSelectedTransactionId] = useState("");
+  const [selectedReportId, setSelectedReportId] = useState("");
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const fetchAllTransactions = async () => {
-    const response = await getAllTransactions();
+  const fetchAllReports = async () => {
+    const response = await getAllReports();
     if (response.status === "success") {
-      setTransactions(response.data);
+      setReports(response.data);
     }
   };
 
-  const fetchAllProjects = async () => {
-    const response = await getAllStates();
+  const fetchAllPhases = async () => {
+    const response = await getAllPhases();
     if (response.status === "success") {
-      setProjects(response.data);
+      setPhases(response.data);
     }
   };
 
   const handleAdd = async () => {
-    const response = await addTransaction({
-      name: transaction,
+    const response = await addReport({
+      name: report,
       description: description,
-      amount: amount,
-      utr: utr,
-      project: projectId,
+      remarks: remarks,
+      phase: phaseId,
     });
     if (response.status === "success") {
-      setTransaction("");
+      setReport("");
       setDescription("");
-      setAmount(0);
-      setUtr("");
-      setProjectId("");
+      setRemarks("");
+      setPhaseId("");
+      setDocs(undefined);
       setShowAddModal(false);
-      fetchAllTransactions();
+      fetchAllReports();
     }
   };
 
   const handleUpdate = async () => {
-    const response = await updateTransaction(selectedTransactionId, {
-      name: transaction,
+    const response = await updateReport(selectedReportId, {
+      name: report,
       description: description,
-      amount: amount,
-      utr: utr,
-      project: projectId,
+      remarks: remarks,
+      phase: phaseId,
     });
     if (response.status === "success") {
-      setTransaction("");
+      setReport("");
       setDescription("");
-      setAmount(0);
-      setUtr("");
-      setProjectId("");
-      setSelectedTransactionId("");
+      setRemarks("");
+      setPhaseId("");
+      setDocs(undefined);
+      setSelectedReportId("");
       setShowEditModal(false);
-      fetchAllTransactions();
+      fetchAllReports();
     }
   };
 
   const handleDelete = async () => {
-    const response = await deleteTransaction(selectedTransactionId);
+    const response = await deleteReport(selectedReportId);
     if (response.status === "success") {
-      setTransaction("");
+      setReport("");
       setDescription("");
-      setAmount(0);
-      setUtr("");
-      setProjectId("");
-      setSelectedTransactionId("");
+      setRemarks("");
+      setPhaseId("");
+      setDocs(undefined);
+      setSelectedReportId("");
       setShowDeleteModal(false);
-      fetchAllTransactions();
+      fetchAllReports();
     }
   };
 
   useEffect(() => {
-    fetchAllTransactions();
-    fetchAllProjects();
+    fetchAllReports();
+    fetchAllPhases();
   }, []);
 
   return (
@@ -127,11 +127,11 @@ export default function Transactions() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Transactions</h2>
+          <h2>Reports</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Transaction
+            Add Report
           </Button>
         </Grid>
       </Grid>
@@ -145,8 +145,8 @@ export default function Transactions() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactions &&
-              transactions.map((row, index) => (
+            {reports &&
+              reports.map((row, index) => (
                 <TableRow
                   key={row._id}
                   sx={{
@@ -162,12 +162,12 @@ export default function Transactions() {
                     <IconButton
                       onClick={() => {
                         setShowEditModal(true);
-                        setTransaction(row.name);
+                        setReport(row.name);
                         setDescription(row.description);
-                        setAmount(row.amount);
-                        setUtr(row.utr);
-                        setSelectedTransactionId(row._id);
-                        setProjectId(row.project);
+                        setRemarks(row.remarks);
+                        setDocs(row.docs);
+                        setPhaseId(row.phase);
+                        setSelectedReportId(row._id);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -175,8 +175,8 @@ export default function Transactions() {
                     <IconButton
                       onClick={() => {
                         setShowDeleteModal(true);
-                        setTransaction(row.name);
-                        setSelectedTransactionId(row._id);
+                        setReport(row.name);
+                        setSelectedReportId(row._id);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
@@ -192,24 +192,24 @@ export default function Transactions() {
         open={showAddModal}
         onClose={() => {
           setShowAddModal(false);
-          setTransaction("");
+          setReport("");
           setDescription("");
-          setAmount(0);
-          setUtr("");
-          setProjectId("");
+          setRemarks("");
+          setDocs(undefined);
+          setPhaseId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Transaction</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Add Report</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label="Report"
             type="text"
-            value={transaction}
-            onChange={(e) => setTransaction(e.target.value)}
+            value={report}
+            onChange={(e) => setReport(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
@@ -228,77 +228,63 @@ export default function Transactions() {
               size="small"
             />
           </FormControl>
-          {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DateTimePicker
-              renderInput={(props) => <TextField {...props} />}
-              label="DateTimePicker"
-              value={createdAt}
-              onChange={(newValue) => {
-                setCreatedAt(newValue);
-              }}
-            />
-          </LocalizationProvider> */}
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Amount"
+              label="Remarks"
               type="text"
-              value={amount}
-              inputProps={{ inputMode: "decimal" }}
-              onChange={(e) => setAmount(e.target.value)}
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <TextField
-              autoFocus
-              label="UTR"
-              type="text"
-              value={utr}
-              onChange={(e) => setUtr(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-          </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">Phase</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={projectId}
-              label="Project"
-              onChange={(e) => setProjectId(e.target.value)}
+              value={phaseId}
+              label="Country"
+              onChange={(e) => setPhaseId(e.target.value)}
             >
-              {projects &&
-                projects.map((project) => (
-                  <MenuItem key={project._id} value={project._id}>
-                    {project.name}
+              {phases &&
+                phases.map((phase) => (
+                  <MenuItem key={phase._id} value={phase._id}>
+                    {phase.name}
                   </MenuItem>
                 ))}
             </Select>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <Input
+              autoFocus
+              type="file"
+              inputProps={{ multiple: true }}
+              onChange={(e) => setDocs(e.target.files)}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
           </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
               setShowAddModal(false);
-              setTransaction("");
+              setReport("");
               setDescription("");
-              setAmount(0);
-              setUtr("");
-              setProjectId("");
+              setRemarks("");
+              setPhaseId("");
+              setDocs(undefined);
             }}
           >
             Cancel
           </Button>
           <Button
             onClick={handleAdd}
-            disabled={
-              !transaction || !description || !projectId || !amount || !utr
-            }
+            disabled={!report || !description || !remarks || !docs || !phaseId}
           >
             Add
           </Button>
@@ -309,24 +295,24 @@ export default function Transactions() {
         open={showEditModal}
         onClose={() => {
           setShowEditModal(false);
-          setTransaction("");
+          setReport("");
           setDescription("");
-          setAmount(0);
-          setUtr("");
-          setProjectId("");
+          setRemarks("");
+          setPhaseId("");
+          setDocs(undefined);
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Transaction</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Edit Report</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label="Report"
             type="text"
-            value={transaction}
-            onChange={(e) => setTransaction(e.target.value)}
+            value={report}
+            onChange={(e) => setReport(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
@@ -348,41 +334,28 @@ export default function Transactions() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Amount"
+              label="Remarks"
               type="text"
-              value={amount}
-              inputProps={{ inputMode: "decimal" }}
-              onChange={(e) => setAmount(e.target.value)}
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <TextField
-              autoFocus
-              label="UTR"
-              type="text"
-              value={utr}
-              onChange={(e) => setUtr(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-          </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">Phase</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={projectId}
-              label="Project"
-              onChange={(e) => setProjectId(e.target.value)}
+              value={phaseId}
+              label="Country"
+              onChange={(e) => setPhaseId(e.target.value)}
             >
-              {projects &&
-                projects.map((project) => (
-                  <MenuItem key={project._id} value={project._id}>
-                    {project.name}
+              {phases &&
+                phases.map((phase) => (
+                  <MenuItem key={phase._id} value={phase._id}>
+                    {phase.name}
                   </MenuItem>
                 ))}
             </Select>
@@ -392,20 +365,18 @@ export default function Transactions() {
           <Button
             onClick={() => {
               setShowEditModal(false);
-              setTransaction("");
+              setReport("");
               setDescription("");
-              setUtr("");
-              setAmount(0);
-              setProjectId("");
+              setRemarks("");
+              setPhaseId("");
+              setDocs(undefined);
             }}
           >
             Cancel
           </Button>
           <Button
             onClick={handleUpdate}
-            disabled={
-              !transaction || !description || !projectId || !amount || !utr
-            }
+            disabled={!report || !description || !remarks || !docs || !phaseId}
           >
             Save
           </Button>
@@ -414,7 +385,7 @@ export default function Transactions() {
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this transaction?"
+        message="Are you sure you want to delete this report?"
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

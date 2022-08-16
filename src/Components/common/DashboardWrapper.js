@@ -10,7 +10,8 @@ import AppBarComponent from "./AppBarComponent";
 const mdTheme = createTheme();
 
 export default function DashboardWrapper({ children }) {
-  const [isDrawerOpen, setDrawerOpen] = useState(true);
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>

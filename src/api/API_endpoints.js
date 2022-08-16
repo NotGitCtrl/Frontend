@@ -49,4 +49,19 @@ export const API_endpoints = {
   addTransaction: "/api/transactions",
   updateTransaction: "/api/transactions",
   deleteTransaction: "/api/transactions",
+  // projects
+  getAllProjects: "/api/projects",
+  addProject: "/api/projects",
+  updateProject: "/api/projects",
+  deleteProject: "/api/projects",
+  // reports
+  getAllReports: "/api/reports",
+  addReport: "/api/reports",
+  updateReport: "/api/reports",
+  deleteReport: "/api/reports",
+  // phases
+  getAllPhases: "/api/phases",
+  addPhase: "/api/phases",
+  updatePhase: "/api/phases",
+  deletePhase: "/api/phases",
 };
