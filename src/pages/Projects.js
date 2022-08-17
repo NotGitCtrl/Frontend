@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../Components/common/ConfirmationModal";
-import { getAllStates } from "../api/services/states";
+import { getAllSchemes } from "../api/services/schemes";
+import { getAllHeis } from "../api/services/hei";
 import {
-  getAllTransactions,
-  addTransaction,
-  updateTransaction,
-  deleteTransaction,
-} from "../api/services/transactions";
+  getAllProjects,
+  addProject,
+  updateProject,
+  deleteProject,
+} from "../api/services/projects";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -30,92 +31,92 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
+import { FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 
-export default function Transactions() {
-  const [transactions, setTransactions] = useState(undefined);
-  const [transaction, setTransaction] = useState("");
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [utr, setUtr] = useState("");
-
+export default function Projects() {
   const [projects, setProjects] = useState(undefined);
-  const [projectId, setProjectId] = useState("");
 
-  const [selectedTransactionId, setSelectedTransactionId] = useState("");
+  const [project, setProject] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("hardware");
+
+  const [schemes, setSchemes] = useState(undefined);
+  const [schemeId, setSchemeId] = useState("");
+
+  const [heis, setHeis] = useState(undefined);
+  const [heiId, setHeiId] = useState("");
+
+  const [selectedProjectId, setSelectedProjectId] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const fetchAllTransactions = async () => {
-    const response = await getAllTransactions();
-    if (response.status === "success") {
-      setTransactions(response.data);
-    }
-  };
-
   const fetchAllProjects = async () => {
-    const response = await getAllStates();
+    const response = await getAllProjects();
     if (response.status === "success") {
       setProjects(response.data);
     }
   };
 
-  const handleAdd = async () => {
-    const response = await addTransaction({
-      name: transaction,
-      description: description,
-      amount: amount,
-      utr: utr,
-      project: projectId,
-    });
+  const fetchAllSchemes = async () => {
+    const response = await getAllSchemes();
     if (response.status === "success") {
-      setTransaction("");
+      setSchemes(response.data);
+    }
+  };
+
+  const fetchAllHeis = async () => {
+    const response = await getAllHeis();
+    if (response.status === "success") {
+      setHeis(response.data);
+    }
+  };
+
+  const handleAdd = async () => {
+    const response = await addProject({ name: project, scheme: schemeId });
+    if (response.status === "success") {
+      setProject("");
       setDescription("");
-      setAmount(0);
-      setUtr("");
-      setProjectId("");
+      setSchemeId("");
+      setHeiId("");
       setShowAddModal(false);
-      fetchAllTransactions();
+      fetchAllProjects();
     }
   };
 
   const handleUpdate = async () => {
-    const response = await updateTransaction(selectedTransactionId, {
-      name: transaction,
-      description: description,
-      amount: amount,
-      utr: utr,
-      project: projectId,
+    const response = await updateProject(selectedProjectId, {
+      name: project,
+      scheme: schemeId,
     });
     if (response.status === "success") {
-      setTransaction("");
+      setProject("");
       setDescription("");
-      setAmount(0);
-      setUtr("");
-      setProjectId("");
-      setSelectedTransactionId("");
+      setSchemeId("");
+      setHeiId("");
+      setSelectedProjectId("");
       setShowEditModal(false);
-      fetchAllTransactions();
+      fetchAllProjects();
     }
   };
 
   const handleDelete = async () => {
-    const response = await deleteTransaction(selectedTransactionId);
+    const response = await deleteProject(selectedProjectId);
     if (response.status === "success") {
-      setTransaction("");
+      setProject("");
       setDescription("");
-      setAmount(0);
-      setUtr("");
-      setProjectId("");
-      setSelectedTransactionId("");
+      setSchemeId("");
+      setHeiId("");
+      setSelectedProjectId("");
       setShowDeleteModal(false);
-      fetchAllTransactions();
+      fetchAllProjects();
     }
   };
 
   useEffect(() => {
-    fetchAllTransactions();
     fetchAllProjects();
+    fetchAllSchemes();
+    fetchAllHeis();
   }, []);
 
   return (
@@ -127,11 +128,11 @@ export default function Transactions() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Transactions</h2>
+          <h2>Projects</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Transaction
+            Add Project
           </Button>
         </Grid>
       </Grid>
@@ -145,8 +146,8 @@ export default function Transactions() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactions &&
-              transactions.map((row, index) => (
+            {projects &&
+              projects.map((row, index) => (
                 <TableRow
                   key={row._id}
                   sx={{
@@ -162,12 +163,11 @@ export default function Transactions() {
                     <IconButton
                       onClick={() => {
                         setShowEditModal(true);
-                        setTransaction(row.name);
+                        setProject(row.name);
                         setDescription(row.description);
-                        setAmount(row.amount);
-                        setUtr(row.utr);
-                        setSelectedTransactionId(row._id);
-                        setProjectId(row.project);
+                        setSelectedProjectId(row._id);
+                        setSchemeId(row.scheme);
+                        setHeiId(row.hei);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -175,8 +175,8 @@ export default function Transactions() {
                     <IconButton
                       onClick={() => {
                         setShowDeleteModal(true);
-                        setTransaction(row.name);
-                        setSelectedTransactionId(row._id);
+                        setProject(row.name);
+                        setSelectedProjectId(row._id);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
@@ -192,24 +192,23 @@ export default function Transactions() {
         open={showAddModal}
         onClose={() => {
           setShowAddModal(false);
-          setTransaction("");
+          setProject("");
           setDescription("");
-          setAmount(0);
-          setUtr("");
-          setProjectId("");
+          setSchemeId("");
+          setHeiId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Transaction</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Add Project</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
             label="Name"
             type="text"
-            value={transaction}
-            onChange={(e) => setTransaction(e.target.value)}
+            value={project}
+            onChange={(e) => setProject(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
@@ -228,54 +227,64 @@ export default function Transactions() {
               size="small"
             />
           </FormControl>
-          {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DateTimePicker
-              renderInput={(props) => <TextField {...props} />}
-              label="DateTimePicker"
-              value={createdAt}
-              onChange={(newValue) => {
-                setCreatedAt(newValue);
-              }}
-            />
-          </LocalizationProvider> */}
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <TextField
-              autoFocus
-              label="Amount"
-              type="text"
-              value={amount}
-              inputProps={{ inputMode: "decimal" }}
-              onChange={(e) => setAmount(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
+            <FormLabel id="demo-controlled-radio-buttons-group">
+              Category
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <FormControlLabel
+                value="hardware"
+                control={<Radio />}
+                label="Hardware"
+              />
+              <FormControlLabel
+                value="software"
+                control={<Radio />}
+                label="Software"
+              />
+              <FormControlLabel
+                value="hybrid"
+                control={<Radio />}
+                label="Hybrid"
+              />
+            </RadioGroup>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <TextField
-              autoFocus
-              label="UTR"
-              type="text"
-              value={utr}
-              onChange={(e) => setUtr(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-          </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">Scheme</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={projectId}
-              label="Project"
-              onChange={(e) => setProjectId(e.target.value)}
+              value={schemeId}
+              label="Scheme"
+              onChange={(e) => setSchemeId(e.target.value)}
             >
-              {projects &&
-                projects.map((project) => (
-                  <MenuItem key={project._id} value={project._id}>
-                    {project.name}
+              {schemes &&
+                schemes.map((scheme) => (
+                  <MenuItem key={scheme._id} value={scheme._id}>
+                    {scheme.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <InputLabel id="demo-simple-select-label">HEI</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={heiId}
+              label="HEI"
+              onChange={(e) => setHeiId(e.target.value)}
+            >
+              {heis &&
+                heis.map((hei) => (
+                  <MenuItem key={hei._id} value={hei._id}>
+                    {hei.name}
                   </MenuItem>
                 ))}
             </Select>
@@ -285,11 +294,10 @@ export default function Transactions() {
           <Button
             onClick={() => {
               setShowAddModal(false);
-              setTransaction("");
+              setProject("");
               setDescription("");
-              setAmount(0);
-              setUtr("");
-              setProjectId("");
+              setSchemeId("");
+              setHeiId("");
             }}
           >
             Cancel
@@ -297,7 +305,7 @@ export default function Transactions() {
           <Button
             onClick={handleAdd}
             disabled={
-              !transaction || !description || !projectId || !amount || !utr
+              !project || !description || !category || !schemeId || !heiId
             }
           >
             Add
@@ -309,24 +317,23 @@ export default function Transactions() {
         open={showEditModal}
         onClose={() => {
           setShowEditModal(false);
-          setTransaction("");
+          setProject("");
           setDescription("");
-          setAmount(0);
-          setUtr("");
-          setProjectId("");
+          setSchemeId("");
+          setHeiId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Transaction</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Edit Project</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
             label="Name"
             type="text"
-            value={transaction}
-            onChange={(e) => setTransaction(e.target.value)}
+            value={project}
+            onChange={(e) => setProject(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
@@ -346,43 +353,63 @@ export default function Transactions() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <TextField
-              autoFocus
-              label="Amount"
-              type="text"
-              value={amount}
-              inputProps={{ inputMode: "decimal" }}
-              onChange={(e) => setAmount(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
+            <FormLabel id="demo-controlled-radio-buttons-group">
+              Category
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <FormControlLabel
+                value="hardware"
+                control={<Radio />}
+                label="Hardware"
+              />
+              <FormControlLabel
+                value="software"
+                control={<Radio />}
+                label="Software"
+              />
+              <FormControlLabel
+                value="hybrid"
+                control={<Radio />}
+                label="Hybrid"
+              />
+            </RadioGroup>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <TextField
-              autoFocus
-              label="UTR"
-              type="text"
-              value={utr}
-              onChange={(e) => setUtr(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-          </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">Scheme</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={projectId}
-              label="Project"
-              onChange={(e) => setProjectId(e.target.value)}
+              value={schemeId}
+              label="Country"
+              onChange={(e) => setSchemeId(e.target.value)}
             >
-              {projects &&
-                projects.map((project) => (
-                  <MenuItem key={project._id} value={project._id}>
-                    {project.name}
+              {schemes &&
+                schemes.map((scheme) => (
+                  <MenuItem key={scheme._id} value={scheme._id}>
+                    {scheme.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <InputLabel id="demo-simple-select-label">HEI</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={heiId}
+              label="HEI"
+              onChange={(e) => setHeiId(e.target.value)}
+            >
+              {heis &&
+                heis.map((hei) => (
+                  <MenuItem key={hei._id} value={hei._id}>
+                    {hei.name}
                   </MenuItem>
                 ))}
             </Select>
@@ -392,11 +419,10 @@ export default function Transactions() {
           <Button
             onClick={() => {
               setShowEditModal(false);
-              setTransaction("");
+              setProject("");
               setDescription("");
-              setUtr("");
-              setAmount(0);
-              setProjectId("");
+              setSchemeId("");
+              setHeiId("");
             }}
           >
             Cancel
@@ -404,7 +430,7 @@ export default function Transactions() {
           <Button
             onClick={handleUpdate}
             disabled={
-              !transaction || !description || !projectId || !amount || !utr
+              !project || !description || !category || !schemeId || !heiId
             }
           >
             Save
@@ -414,7 +440,7 @@ export default function Transactions() {
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this transaction?"
+        message="Are you sure you want to delete this project?"
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

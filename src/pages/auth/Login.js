@@ -39,7 +39,7 @@ const theme = createTheme();
 
 export default function Login() {
   let navigate = useNavigate();
-  const { setIsLoggedIn } = React.useContext(AppContext);
+  const { setIsLoggedIn, setRole } = React.useContext(AppContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,6 +52,8 @@ export default function Login() {
     if (response.token !== null) {
       setStorage("user_token", response.token);
       setIsLoggedIn(true);
+      setRole(response.data.role);
+      setStorage("role", response.data.role);
       navigate("/profile");
     }
   };
