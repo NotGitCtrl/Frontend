@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../../Components/common/ConfirmationModal";
+import SnackBarComponent from "../../Components/common/SnackBarComponent";
 import {
   addCountry,
   deleteCountry,
@@ -33,6 +34,9 @@ export default function Countries() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState("");
+  const [message, setMessage] = useState("");
 
   const fetchAllCountries = async () => {
     const response = await getAllCountries();
@@ -47,6 +51,7 @@ export default function Countries() {
       setCountry("");
       setShowAddModal(false);
       fetchAllCountries();
+      snackbarOpen(response.status,response.message)
     }
   };
 
@@ -57,6 +62,7 @@ export default function Countries() {
       setSelectedCountryId("");
       setShowEditModal(false);
       fetchAllCountries();
+      snackbarOpen(response.status,response.message)
     }
   };
 
@@ -67,6 +73,7 @@ export default function Countries() {
       setSelectedCountryId("");
       setShowDeleteModal(false);
       fetchAllCountries();
+      snackbarOpen(response.status,response.message)
     }
   };
 
@@ -74,8 +81,21 @@ export default function Countries() {
     fetchAllCountries();
   }, []);
 
+  const snackbarOpen = (status, message) => {
+    setOpen(true)
+    setStatus(status);
+    setMessage(message);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   return (
     <DashboardWrapper>
+      <SnackBarComponent status={status} message={message} open={open} handleClose={handleClose} />
+      
       <Grid
         container
         spacing={1}

@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../Components/common/ConfirmationModal";
-import {
-  getAllSchemes,
-  addScheme,
-  updateScheme,
-  deleteScheme,
-} from "../api/services/schemes";
+import {  getAllPhases, addPhase, updatePhase, deletePhase } from "../api/services/phases";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -21,76 +16,88 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
-import { Input } from "@mui/material";
+import { getAllDistricts } from "../api/services/districts";
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function Schemes() {
-  const [schemes, setSchemes] = useState(undefined);
-  const [scheme, setScheme] = useState("");
+
+export default function Phase() {
+  const [phases, setPhases] = useState(undefined);
+  const [phase, setPhase] = useState("");
+
   const [description, setDescription] = useState("");
-  const [docs, setDocs] = useState(undefined);
-  const [selectedSchemeId, setSelectedSchemeId] = useState("");
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [selectedPhaseId, setSelectedPhaseId] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const fetchAllSchemes = async () => {
-    const response = await getAllSchemes();
+  const fetchAllPhases = async () => {
+    const response = await getAllPhases();
     if (response.status === "success") {
-      setSchemes(response.data);
+      setPhases(response.data);
     }
   };
 
-  console.log(docs);
-
   const handleAdd = async () => {
-    const response = await addScheme({
-      name: scheme,
+    const response = await addPhase({
+      name: phase,
       description: description,
+      startDate: startDate,
+      endDate: endDate
     });
     if (response.status === "success") {
-      setScheme("");
+      setPhase("");
       setDescription("");
-      setDocs(undefined);
+      setStartDate(null);
+      setEndDate(null);
       setShowAddModal(false);
-      fetchAllSchemes();
+      fetchAllPhases();
     }
   };
 
   const handleUpdate = async () => {
-    const response = await updateScheme(selectedSchemeId, {
-      name: scheme,
-      docs: docs,
+    const response = await updatePhase(selectedPhaseId, {
+      name: phase,
       description: description,
+      startDate: startDate,
+      endDate: endDate
     });
     if (response.status === "success") {
-      setScheme("");
+      setPhase("");
       setDescription("");
-      setDocs(undefined);
-      setSelectedSchemeId("");
+      setStartDate(null);
+      setEndDate(null);
       setShowEditModal(false);
-      fetchAllSchemes();
+      fetchAllPhases();
     }
   };
 
   const handleDelete = async () => {
-    const response = await deleteScheme(selectedSchemeId);
+    const response = await deletePhase(selectedPhaseId);
     if (response.status === "success") {
-      setScheme("");
+      setPhase("");
       setDescription("");
-      setDocs(undefined);
-      setSelectedSchemeId("");
+      setStartDate("");
+      setEndDate("");
       setShowDeleteModal(false);
-      fetchAllSchemes();
+      fetchAllPhases();
     }
   };
 
   useEffect(() => {
-    fetchAllSchemes();
+    fetchAllPhases();
   }, []);
 
   return (
@@ -102,11 +109,11 @@ export default function Schemes() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Schemes</h2>
+          <h2>Phases</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Scheme
+            Add New Phase
           </Button>
         </Grid>
       </Grid>
@@ -120,8 +127,8 @@ export default function Schemes() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {schemes &&
-              schemes.map((row, index) => (
+            {phases &&
+              phases.map((row, index) => (
                 <TableRow
                   key={row._id}
                   sx={{
@@ -137,10 +144,11 @@ export default function Schemes() {
                     <IconButton
                       onClick={() => {
                         setShowEditModal(true);
-                        setScheme(row.name);
+                        setPhase(row.name);
+                        setSelectedPhaseId(row._id);
                         setDescription(row.description);
-                        setSelectedSchemeId(row._id);
-                        setDocs(row.docs);
+                        setStartDate(row.startDate);
+                        setEndDate(row.endDate);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -148,8 +156,8 @@ export default function Schemes() {
                     <IconButton
                       onClick={() => {
                         setShowDeleteModal(true);
-                        setScheme(row.name);
-                        setSelectedSchemeId(row._id);
+                        setPhase(row.name);
+                        setSelectedPhaseId(row._id);
                       }}
                     >
                       <DeleteIcon fontSize="small" />
@@ -165,22 +173,23 @@ export default function Schemes() {
         open={showAddModal}
         onClose={() => {
           setShowAddModal(false);
-          setScheme("");
-          setDocs(undefined);
+          setPhase("");
           setDescription("");
+          setStartDate("");
+          setEndDate("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Scheme</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Add Phase</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Scheme"
+            label="Name"
             type="text"
-            value={scheme}
-            onChange={(e) => setScheme(e.target.value)}
+            value={phase}
+            onChange={(e) => setPhase(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
@@ -191,40 +200,55 @@ export default function Schemes() {
               label="Description"
               type="text"
               value={description}
-              multiline
-              rows={4}
               onChange={(e) => setDescription(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
             />
           </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <Input
-              autoFocus
-              type="file"
-              inputProps={{ multiple: true }}
-              onChange={(e) => setDocs(e.target.files)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-          </FormControl>
+        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={date => setStartDate(date)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        </FormControl>
+
+        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            onChange={date => setEndDate(date)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        </FormControl>
+         
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
               setShowAddModal(false);
-              setScheme("");
+              setPhase("");
               setDescription("");
-              setDocs(undefined);
+              setStartDate("");
+              setEndDate("");
             }}
           >
             Cancel
           </Button>
           <Button
             onClick={handleAdd}
-            disabled={!scheme || !description || !docs}
+            disabled={
+              !phase ||
+              !description ||
+              !startDate ||
+              !endDate
+            }
           >
             Add
           </Button>
@@ -235,22 +259,23 @@ export default function Schemes() {
         open={showEditModal}
         onClose={() => {
           setShowEditModal(false);
-          setScheme("");
-          setDocs(undefined);
+          setPhase("");
           setDescription("");
+          setStartDate("");
+          setEndDate("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Scheme</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>Edit Phase</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Scheme"
+            label="Phase"
             type="text"
-            value={scheme}
-            onChange={(e) => setScheme(e.target.value)}
+            value={phase}
+            onChange={(e) => setPhase(e.target.value)}
             fullWidth
             variant="outlined"
             size="small"
@@ -267,21 +292,49 @@ export default function Schemes() {
               size="small"
             />
           </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={date => setStartDate(date)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        </FormControl>
+
+        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            onChange={date => setEndDate(date)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        </FormControl>
+        
+          
+          
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
               setShowEditModal(false);
-              setScheme("");
+              setPhase("");
               setDescription("");
-              setDocs(undefined);
+              setStartDate("");
+              setEndDate("");
             }}
           >
             Cancel
           </Button>
           <Button
             onClick={handleUpdate}
-            disabled={!scheme || !description || !docs}
+            disabled={
+              !phase ||
+              !description 
+            }
           >
             Save
           </Button>
@@ -290,7 +343,7 @@ export default function Schemes() {
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this scheme?"
+        message="Are you sure you want to delete this state?"
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

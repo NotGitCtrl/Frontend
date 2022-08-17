@@ -24,12 +24,6 @@ const OtpInput = () => {
       userId: localStorage.getItem("userId"),
       email: localStorage.getItem("email"),
     };
-    // axios
-    //   .post("http://localhost:5000/auth/resendOTPVerification", resendData)
-    //   .then((response) => console.log(response))
-    //   .catch((error) => {
-    //     console.error("There was an error!", error);
-    //   });
   };
 
   return (
