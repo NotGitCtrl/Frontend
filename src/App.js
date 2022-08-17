@@ -13,6 +13,7 @@ import Hei from "./pages/Hei";
 import FA from "./pages/FA";
 import Schemes from "./pages/Schemes";
 import Transactions from "./pages/Transactions";
+import Phases from "./pages/Phases";
 import Projects from "./pages/Projects";
 import Reports from "./pages/Reports";
 import InviteMember from "./pages/InviteMember";
@@ -38,6 +39,7 @@ function App() {
         <Route path="/dashboard/universities" element={<Universities />} />
         <Route path="/dashboard/schemes" element={<Schemes />} />
         <Route path="/dashboard/transactions" element={<Transactions />} />
+        <Route path="/dashboard/phases" element={<Phases />} />
         <Route path="/dashboard/projects" element={<Projects />} />
         <Route path="/dashboard/reports" element={<Reports />} />
 
