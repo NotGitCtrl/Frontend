@@ -13,6 +13,9 @@ import Hei from "./pages/Hei";
 import FA from "./pages/FA";
 import Schemes from "./pages/Schemes";
 import Transactions from "./pages/Transactions";
+import Projects from "./pages/Projects";
+import Reports from "./pages/Reports";
+import InviteMember from "./pages/InviteMember";
 
 function App() {
   // return <ForgotPass />;
@@ -26,6 +29,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
         <Route path="forgot-password" element={<ForgotPass />} />
+        <Route path="invite-member" element={<InviteMember />} />
 
         <Route path="/dashboard/countries" element={<Countries />} />
         <Route path="/dashboard/states" element={<States />} />
@@ -34,6 +38,8 @@ function App() {
         <Route path="/dashboard/universities" element={<Universities />} />
         <Route path="/dashboard/schemes" element={<Schemes />} />
         <Route path="/dashboard/transactions" element={<Transactions />} />
+        <Route path="/dashboard/projects" element={<Projects />} />
+        <Route path="/dashboard/reports" element={<Reports />} />
 
         <Route path="/admin/hei" element={<Hei />} />
         <Route path="/admin/fa" element={<FA />} />

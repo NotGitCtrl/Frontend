@@ -217,7 +217,6 @@ export default function Schemes() {
               setShowAddModal(false);
               setScheme("");
               setDescription("");
-              setFaId("");
               setDocs(undefined);
             }}
           >
@@ -275,7 +274,6 @@ export default function Schemes() {
               setShowEditModal(false);
               setScheme("");
               setDescription("");
-              setFaId("");
               setDocs(undefined);
             }}
           >
