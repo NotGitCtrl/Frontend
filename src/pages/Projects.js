@@ -32,6 +32,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Projects() {
   const [projects, setProjects] = useState(undefined);
@@ -73,7 +74,13 @@ export default function Projects() {
   };
 
   const handleAdd = async () => {
-    const response = await addProject({ name: project, scheme: schemeId });
+    const response = await addProject({
+      name: project,
+      description: description,
+      category: category,
+      scheme: schemeId,
+      hei: heiId,
+    });
     if (response.status === "success") {
       setProject("");
       setDescription("");
@@ -158,7 +165,9 @@ export default function Projects() {
                   <TableCell component="th" scope="row">
                     {index + 1}.
                   </TableCell>
-                  <TableCell align="left">{row.name}</TableCell>
+                  <TableCell align="left">
+                    <Link to={`/project-detail/${row._id}`}>{row.name}</Link>
+                  </TableCell>
                   <TableCell align="left">
                     <IconButton
                       onClick={() => {

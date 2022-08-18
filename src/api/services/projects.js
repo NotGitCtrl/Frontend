@@ -12,10 +12,28 @@ function getAllProjects() {
   });
 }
 
+function getProjectDetails(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await interceptor(
+        API_endpoints.getProjectDetails + "/" + id,
+        "GET"
+      );
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 function addProject(body) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.addProject, "POST", body);
+      const response = await interceptor(
+        API_endpoints.addProject,
+        "POST",
+        body
+      );
       resolve(response);
     } catch (err) {
       reject(err);
@@ -52,4 +70,10 @@ function deleteProject(id) {
   });
 }
 
-export { getAllProjects, addProject, updateProject, deleteProject };
+export {
+  getAllProjects,
+  addProject,
+  updateProject,
+  deleteProject,
+  getProjectDetails,
+};

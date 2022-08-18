@@ -17,6 +17,7 @@ import Phases from "./pages/Phases";
 import Projects from "./pages/Projects";
 import Reports from "./pages/Reports";
 import InviteMember from "./pages/InviteMember";
+import ProjectDetail from "./pages/ProjectDetail";
 
 function App() {
   // return <ForgotPass />;
@@ -31,6 +32,7 @@ function App() {
         <Route path="profile" element={<Profile />} />
         <Route path="forgot-password" element={<ForgotPass />} />
         <Route path="invite-member" element={<InviteMember />} />
+        <Route path="/project-detail/:id" element={<ProjectDetail />} />
 
         <Route path="/dashboard/countries" element={<Countries />} />
         <Route path="/dashboard/states" element={<States />} />

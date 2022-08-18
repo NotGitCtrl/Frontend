@@ -54,6 +54,7 @@ export const API_endpoints = {
   addProject: "/api/projects",
   updateProject: "/api/projects",
   deleteProject: "/api/projects",
+  getProjectDetails: "/api/projects",
   // reports
   getAllReports: "/api/reports",
   addReport: "/api/reports",

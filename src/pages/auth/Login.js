@@ -49,7 +49,7 @@ export default function Login() {
       password: data.get("password"),
     };
     const response = await loginUser(loginData);
-    if (response.token !== null) {
+    if (response.token) {
       setStorage("user_token", response.token);
       setIsLoggedIn(true);
       setRole(response.data.role);
