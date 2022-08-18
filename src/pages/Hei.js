@@ -80,8 +80,8 @@ export default function Hei() {
     }
   };
 
-  const fetchAllDistricts = async () => {
-    const response = await getAllDistricts();
+  const fetchAllDistricts = async (stateId) => {
+    const response = await getAllDistricts({ state_id: stateId });
     if (response.status === "success") {
       setDistricts(response.data);
     }

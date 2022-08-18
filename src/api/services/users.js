@@ -5,7 +5,7 @@ function getUniAdmins(role_id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(API_endpoints.getUniAdmins, "POST", {
-        role_id: "62eff434a3e25c1405599a44",
+        role_id: "62fa61d822030e523a57abef",
       });
       resolve(response);
     } catch (err) {
@@ -18,7 +18,7 @@ function getHeiAdmins(role_id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(API_endpoints.getHeiAdmins, "POST", {
-        role_id: "62f1d87ca6989ef54468a825",
+        role_id: "62fa61d822030e523a57abec",
       });
       resolve(response);
     } catch (err) {
@@ -31,7 +31,7 @@ function getFAAdmins(role_id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(API_endpoints.getFAAdmins, "POST", {
-        role_id: "62f26eeea6989ef54468b10b",
+        role_id: "62fa61d822030e523a57abea",
       });
       resolve(response);
     } catch (err) {

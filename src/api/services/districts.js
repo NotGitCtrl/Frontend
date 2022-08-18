@@ -15,7 +15,11 @@ function getAllDistricts() {
 function addDistrict(body) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.addDistrict, "POST", body);
+      const response = await interceptor(
+        API_endpoints.addDistrict,
+        "POST",
+        body
+      );
       resolve(response);
     } catch (err) {
       reject(err);
@@ -26,7 +30,11 @@ function addDistrict(body) {
 function updateDistrict(id, body) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.updateDistrict + "/" + id, "PUT", body);
+      const response = await interceptor(
+        API_endpoints.updateDistrict + "/" + id,
+        "PUT",
+        body
+      );
       resolve(response);
     } catch (err) {
       reject(err);
@@ -37,7 +45,10 @@ function updateDistrict(id, body) {
 function deleteDistrict(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.deleteDistrict + "/" + id, "DELETE");
+      const response = await interceptor(
+        API_endpoints.deleteDistrict + "/" + id,
+        "DELETE"
+      );
       resolve(response);
     } catch (err) {
       reject(err);
