@@ -54,6 +54,8 @@ export default function Login() {
       setIsLoggedIn(true);
       setRole(response.data.role);
       setStorage("role", response.data.role);
+      setStorage("firstName", response.data.firstName);
+      setStorage("lastName", response.data.lastName);
       navigate("/profile");
     }
   };
