@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import { getProjectDetails } from "../api/services/projects";
 import { useEffect, useState } from "react";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Unstable_Grid2';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,10 +67,9 @@ export default function ProjectDetail() {
 
   return (
     <DashboardWrapper>
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", bgcolor: 'background.paper' , padding: "20px"}}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
-          // orientation="vertical"
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -81,12 +82,19 @@ export default function ProjectDetail() {
       <TabPanel value={value} index={0}>
         {project.name && (
           <>
-            <Typography variant="h4">Project Details:</Typography>
-            <Typography variant={"h6"}>Name: {project.name}</Typography>
-            <Typography variant={"h6"}>
-              Description: {project.description}
+          <Grid width="50%" sm={8}>
+              <Typography gutterBottom variant={"h4"}> {project.name}</Typography>
+          </Grid>
+          <Grid sm={4}>
+              <Chip label={project.category} color="success" variant="outlined" />
+          </Grid>
+          
+            <Typography gutterBottom variant={"h6"}>
+              Description
             </Typography>
-            <Typography variant={"h6"}>Category: {project.category}</Typography>
+            <Typography gutterBottom variant={"body1"}>
+              {project.description}
+            </Typography>
             <Typography variant={"h6"}>
               Scheme: {project.scheme.name}
             </Typography>

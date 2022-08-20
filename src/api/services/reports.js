@@ -1,10 +1,10 @@
 import interceptor from "../interceptor";
 import { API_endpoints } from "../API_endpoints";
 
-function getAllReports() {
+function getAllReports(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await interceptor(API_endpoints.getAllReports, "GET");
+      const response = await interceptor(API_endpoints.getAllReports + "/" + id + "/list", "GET");
       resolve(response);
     } catch (err) {
       reject(err);
