@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/Context";
-import { clearStorage } from "../../utils/localstorage-utils";
+import { clearStorage, getStorage } from "../../utils/localstorage-utils";
 import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,6 +12,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ConfirmationModal from "./ConfirmationModal";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -35,6 +38,15 @@ export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const { setIsLoggedIn } = useContext(AppContext);
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const logoutUser = () => {
     clearStorage();
@@ -76,13 +88,41 @@ export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
               <NotificationsIcon />
             </Badge>
           </IconButton> */}
-          <IconButton
-            color="inherit"
-            onClick={() => setShowLogoutDialog(true)}
-            sx={{ ml: 3 }}
-          >
-            <LogoutIcon />
-          </IconButton>
+
+          <div>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem>
+                {getStorage("firstName") + " " + getStorage("lastName")}
+              </MenuItem>
+              <MenuItem onClick={() => setShowLogoutDialog(true)}>
+                Logout
+              </MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
 
