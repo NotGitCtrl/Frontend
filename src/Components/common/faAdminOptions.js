@@ -22,7 +22,7 @@ export default [
     id: 3,
     icon: <SchemaIcon />,
     title: "Coordinators",
-    link: "/dashboard/schemes",
+    link: "/dashboard/coordinators",
   },
   {
     id: 4,
@@ -34,18 +34,18 @@ export default [
     id: 5,
     icon: <ShowChartIcon />,
     title: "Analytics",
-    link: "/dashboard/schemes",
+    link: "/dashboard/analytics",
   },
   {
     id: 6,
     icon: <WorkspacePremiumIcon />,
-    title: "HEI",
-    link: "/admin/hei",
+    title: "HEI List",
+    link: "/hei-list",
   },
   {
     id: 7,
     icon: <PersonIcon />,
     title: "Profile Page",
-    link: "/dashboard/schemes",
+    link: "/profile",
   },
 ];

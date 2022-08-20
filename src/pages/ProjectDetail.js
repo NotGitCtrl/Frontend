@@ -8,6 +8,7 @@ import ListReports from "./ListReports";
 import { useParams } from "react-router-dom";
 import { getProjectDetails } from "../api/services/projects";
 import { useEffect, useState } from "react";
+import DashboardWrapper from "../Components/common/DashboardWrapper";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,9 +64,11 @@ export default function ProjectDetail() {
   }, [id]);
 
   return (
+    <DashboardWrapper>
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
+          // orientation="vertical"
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -107,5 +110,6 @@ export default function ProjectDetail() {
         <ListReports />
       </TabPanel>
     </Box>
+    </DashboardWrapper>
   );
 }

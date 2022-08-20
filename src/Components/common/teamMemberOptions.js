@@ -14,12 +14,12 @@ export default [
     id: 2,
     icon: <ShowChartIcon />,
     title: "Analytics",
-    link: "/dashboard/schemes",
+    link: "/dashboard/analytics",
   },
   {
     id: 3,
     icon: <PersonIcon />,
     title: "Profile Page",
-    link: "/dashboard/schemes",
+    link: "/project",
   },
 ];

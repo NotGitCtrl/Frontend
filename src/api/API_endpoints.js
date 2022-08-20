@@ -44,6 +44,8 @@ export const API_endpoints = {
   // schemes
   getAllSchemes: "/api/schemes",
   addScheme: "/api/schemes",
+  updateScheme : "/api/schemes",
+  deleteScheme: "/api/schemes",
   // transactions
   getAllTransactions: "/api/transactions",
   addTransaction: "/api/transactions",

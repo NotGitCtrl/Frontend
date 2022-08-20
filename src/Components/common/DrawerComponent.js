@@ -24,6 +24,7 @@ import faCoordinatorOptions from "./faCoordinatorOptions";
 import heiAdminOptions from "./heiAdminOptions";
 import heiCoordinatorOptions from "./heiCoordinatorOptions";
 import teamMemberOptions from "./teamMemberOptions";
+import { ListItemButton } from "@mui/material";
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -81,27 +82,6 @@ export default function DrawerComponent({ isDrawerOpen, setDrawerOpen }) {
             : superAdminOptions
         }
       />
-
-      <DropdownListButton
-        icon={<AdminPanelSettingsIcon />}
-        title="Admin"
-        subMenus={[
-          {
-            id: 1,
-            icon: <WorkspacePremiumIcon />,
-            title: "HEI",
-            link: "/admin/hei",
-          },
-          {
-            id: 2,
-            icon: <PaidIcon />,
-            title: "Funding Agency",
-            link: "/admin/fa",
-          },
-        ]}
-      />
-
-      <ListButton icon={<DashboardIcon />} title="Dashboard" />
     </>
   );
 

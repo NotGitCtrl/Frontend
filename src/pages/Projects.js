@@ -314,7 +314,7 @@ export default function Projects() {
           <Button
             onClick={handleAdd}
             disabled={
-              !project || !description || !category || !schemeId || !heiId
+              !project || !description || !category  || !heiId
             }
           >
             Add

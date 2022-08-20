@@ -27,7 +27,7 @@ function updateScheme(id, body) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.updateDistrict + "/" + id,
+        API_endpoints.updateScheme + "/" + id,
         "PUT",
         body
       );
@@ -42,7 +42,7 @@ function deleteScheme(id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.deleteDistrict + "/" + id,
+        API_endpoints.deleteScheme + "/" + id,
         "DELETE"
       );
       resolve(response);
@@ -52,4 +52,4 @@ function deleteScheme(id) {
   });
 }
 
-export { getAllSchemes, addScheme, updateScheme, deleteScheme };
+export { getAllSchemes, addScheme, updateScheme, deleteScheme};

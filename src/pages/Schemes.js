@@ -224,7 +224,7 @@ export default function Schemes() {
           </Button>
           <Button
             onClick={handleAdd}
-            disabled={!scheme || !description || !docs}
+            disabled={!scheme || !description}
           >
             Add
           </Button>
@@ -281,7 +281,7 @@ export default function Schemes() {
           </Button>
           <Button
             onClick={handleUpdate}
-            disabled={!scheme || !description || !docs}
+            disabled={!scheme || !description}
           >
             Save
           </Button>
