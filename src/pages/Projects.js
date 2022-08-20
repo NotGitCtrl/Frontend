@@ -95,6 +95,9 @@ export default function Projects() {
     const response = await updateProject(selectedProjectId, {
       name: project,
       scheme: schemeId,
+      description: description,
+      category: category,
+      hei: heiId,
     });
     if (response.status === "success") {
       setProject("");
