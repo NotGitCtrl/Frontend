@@ -24,7 +24,13 @@ import faCoordinatorOptions from "./faCoordinatorOptions";
 import heiAdminOptions from "./heiAdminOptions";
 import heiCoordinatorOptions from "./heiCoordinatorOptions";
 import teamMemberOptions from "./teamMemberOptions";
-import { ListItemButton } from "@mui/material";
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -52,38 +58,32 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-export default function DrawerComponent({ isDrawerOpen, setDrawerOpen }) {
+export default function DrawerComponent({
+  isDrawerOpen = true,
+  setDrawerOpen,
+}) {
+  const navigate = useNavigate();
   const { role } = useContext(AppContext);
-
-  const mainListItems = (
-    <>
-      <DropdownListButton
-        icon={<TableChartIcon />}
-        title="Base Tables"
-        subMenus={
-          role === "super-admin"
-            ? superAdminOptions
-            : role === "ugc-admin"
-            ? ugcAdminOptions
-            : role === "fa-admin"
-            ? faAdminOptions
-            : role === "fa-project-coordinator"
-            ? faCoordinatorOptions
-            : role === "hei-admin"
-            ? heiAdminOptions
-            : role === "hei-project-coordinator"
-            ? heiCoordinatorOptions
-            : role === "project-member"
-            ? teamMemberOptions
-            : role === "university-admin"
-            ? heiAdminOptions
-            : role === "hei-spoc"
-            ? heiAdminOptions
-            : superAdminOptions
-        }
-      />
-    </>
-  );
+  const adminOptions =
+    role === "super-admin"
+      ? superAdminOptions
+      : role === "ugc-admin"
+      ? ugcAdminOptions
+      : role === "fa-admin"
+      ? faAdminOptions
+      : role === "fa-project-coordinator"
+      ? faCoordinatorOptions
+      : role === "hei-admin"
+      ? heiAdminOptions
+      : role === "hei-project-coordinator"
+      ? heiCoordinatorOptions
+      : role === "project-member"
+      ? teamMemberOptions
+      : role === "university-admin"
+      ? heiAdminOptions
+      : role === "hei-spoc"
+      ? heiAdminOptions
+      : superAdminOptions;
 
   return (
     <Drawer variant="permanent" open={isDrawerOpen}>
@@ -100,10 +100,14 @@ export default function DrawerComponent({ isDrawerOpen, setDrawerOpen }) {
         </IconButton>
       </Toolbar>
       <Divider />
+
       <List component="nav">
-        {mainListItems}
-        <Divider sx={{ my: 1 }} />
-        {/* {secondaryListItems} */}
+        {adminOptions.map((item) => (
+          <ListItem button onClick={() => navigate(item.link)} key={item.title}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText>{item.title}</ListItemText>
+          </ListItem>
+        ))}
       </List>
     </Drawer>
   );
