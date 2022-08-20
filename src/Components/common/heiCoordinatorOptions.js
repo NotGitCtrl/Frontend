@@ -14,7 +14,7 @@ export default [
     id: 2,
     icon: <AccountTreeIcon />,
     title: "Teams",
-    link: "/dashboard/projects",
+    link: "/dashboard/teams",
   },
   {
     id: 3,
@@ -26,12 +26,12 @@ export default [
     id: 4,
     icon: <ShowChartIcon />,
     title: "Analytics",
-    link: "/dashboard/schemes",
+    link: "/dashboard/analytics",
   },
   {
     id: 5,
     icon: <PersonIcon />,
     title: "Profile Page",
-    link: "/dashboard/schemes",
+    link: "/profile",
   },
 ];

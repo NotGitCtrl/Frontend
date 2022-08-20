@@ -41,18 +41,18 @@ export default [
     id: 6,
     icon: <SchemaIcon />,
     title: "Coordinators",
-    link: "/dashboard/schemes",
+    link: "/dashboard/coordinators",
   },
   {
     id: 7,
     icon: <ShowChartIcon />,
     title: "Analytics",
-    link: "/dashboard/schemes",
+    link: "/dashboard/analytics",
   },
   {
     id: 8,
     icon: <PersonIcon />,
     title: "Profile Page",
-    link: "/dashboard/schemes",
+    link: "/profile",
   },
 ];

@@ -15,7 +15,7 @@ export default [
     id: 2,
     icon: <AccountTreeIcon />,
     title: "Teams",
-    link: "/dashboard/projects",
+    link: "/dashboard/teams",
   },
   {
     id: 3,
@@ -27,24 +27,24 @@ export default [
     id: 4,
     icon: <SchemaIcon />,
     title: "Coordinators",
-    link: "/dashboard/schemes",
+    link: "/dashboard/coordinators",
   },
   {
     id: 5,
     icon: <SchemaIcon />,
     title: "SPOCs",
-    link: "/dashboard/schemes",
+    link: "/dashboard/spoc",
   },
   {
     id: 6,
     icon: <ShowChartIcon />,
     title: "Analytics",
-    link: "/dashboard/schemes",
+    link: "/dashboard/analytics",
   },
   {
     id: 7,
     icon: <PersonIcon />,
     title: "Profile Page",
-    link: "/dashboard/schemes",
+    link: "/dashboard/profile",
   },
 ];
