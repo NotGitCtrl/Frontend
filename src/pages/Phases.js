@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../Components/common/ConfirmationModal";
-import {  getAllPhases, addPhase, updatePhase, deletePhase } from "../api/services/phases";
+import {
+  getAllPhases,
+  addPhase,
+  updatePhase,
+  deletePhase,
+} from "../api/services/phases";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -24,15 +29,16 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
-import { getAllDistricts } from "../api/services/districts";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { getAllProjects } from "../api/services/projects";
 
-
-export default function Phase() {
+export default function Phases() {
   const [phases, setPhases] = useState(undefined);
   const [phase, setPhase] = useState("");
+  const [projects, setProjects] = useState(undefined);
+  const [projectId, setProjectId] = useState("");
 
   const [description, setDescription] = useState("");
 
@@ -50,18 +56,27 @@ export default function Phase() {
     }
   };
 
+  const fetchAllProjects = async () => {
+    const response = await getAllProjects();
+    if (response.status === "success") {
+      setProjects(response.data);
+    }
+  };
+
   const handleAdd = async () => {
     const response = await addPhase({
       name: phase,
       description: description,
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      projectId: projectId,
     });
     if (response.status === "success") {
       setPhase("");
       setDescription("");
       setStartDate(null);
       setEndDate(null);
+      setProjectId("");
       setShowAddModal(false);
       fetchAllPhases();
     }
@@ -72,13 +87,15 @@ export default function Phase() {
       name: phase,
       description: description,
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      projectId: projectId,
     });
     if (response.status === "success") {
       setPhase("");
       setDescription("");
       setStartDate(null);
       setEndDate(null);
+      setProjectId("");
       setShowEditModal(false);
       fetchAllPhases();
     }
@@ -91,6 +108,7 @@ export default function Phase() {
       setDescription("");
       setStartDate("");
       setEndDate("");
+      setProjectId("");
       setShowDeleteModal(false);
       fetchAllPhases();
     }
@@ -98,6 +116,7 @@ export default function Phase() {
 
   useEffect(() => {
     fetchAllPhases();
+    fetchAllProjects();
   }, []);
 
   return (
@@ -149,6 +168,7 @@ export default function Phase() {
                         setDescription(row.description);
                         setStartDate(row.startDate);
                         setEndDate(row.endDate);
+                        setProjectId(row.projectId);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -177,6 +197,7 @@ export default function Phase() {
           setDescription("");
           setStartDate("");
           setEndDate("");
+          setProjectId("");
         }}
         fullWidth={true}
         maxWidth="xs"
@@ -206,28 +227,44 @@ export default function Phase() {
               size="small"
             />
           </FormControl>
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            onChange={date => setStartDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label="Start Date"
+                value={startDate}
+                onChange={(date) => setStartDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
 
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="End Date"
-            value={endDate}
-            onChange={date => setEndDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
-         
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label="End Date"
+                value={endDate}
+                onChange={(date) => setEndDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={projectId}
+              label="Project"
+              onChange={(e) => setProjectId(e.target.value)}
+            >
+              {projects &&
+                projects.map((project) => (
+                  <MenuItem key={project._id} value={project._id}>
+                    {project.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -237,6 +274,7 @@ export default function Phase() {
               setDescription("");
               setStartDate("");
               setEndDate("");
+              setProjectId("");
             }}
           >
             Cancel
@@ -244,10 +282,7 @@ export default function Phase() {
           <Button
             onClick={handleAdd}
             disabled={
-              !phase ||
-              !description ||
-              !startDate ||
-              !endDate
+              !phase || !description || !startDate || !endDate || !projectId
             }
           >
             Add
@@ -263,6 +298,7 @@ export default function Phase() {
           setDescription("");
           setStartDate("");
           setEndDate("");
+          setProjectId("");
         }}
         fullWidth={true}
         maxWidth="xs"
@@ -292,30 +328,44 @@ export default function Phase() {
               size="small"
             />
           </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            onChange={date => setStartDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label="Start Date"
+                value={startDate}
+                onChange={(date) => setStartDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
 
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="End Date"
-            value={endDate}
-            onChange={date => setEndDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
-        
-          
-          
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label="End Date"
+                value={endDate}
+                onChange={(date) => setEndDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={projectId}
+              label="Project"
+              onChange={(e) => setProjectId(e.target.value)}
+            >
+              {projects &&
+                projects.map((project) => (
+                  <MenuItem key={project._id} value={project._id}>
+                    {project.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -325,17 +375,12 @@ export default function Phase() {
               setDescription("");
               setStartDate("");
               setEndDate("");
+              setProjectId("")
             }}
           >
             Cancel
           </Button>
-          <Button
-            onClick={handleUpdate}
-            disabled={
-              !phase ||
-              !description 
-            }
-          >
+          <Button onClick={handleUpdate} disabled={!phase || !description || !startDate || !endDate || !projectId}>
             Save
           </Button>
         </DialogActions>

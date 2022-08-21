@@ -27,8 +27,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { getAllStreams } from "../api/services/streams";
+import { useTranslation } from "react-i18next";
 
 export default function Hei() {
+  const { t } = useTranslation();
+
   const [heis, setHeis] = useState(undefined);
   const [hei, setHei] = useState("");
   const [selectedHEIId, setSelectedHEIId] = useState("");
@@ -225,11 +228,11 @@ export default function Hei() {
         alignItems="center"
       >
         <Grid item>
-          <h2>HEIs</h2>
+          <h2>{t("HEIs")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add HEI
+            {t("add_hei")}
           </Button>
         </Grid>
       </Grid>
@@ -238,7 +241,7 @@ export default function Hei() {
           <TableHead>
             <TableRow>
               <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
               <TableCell align="left">Actions</TableCell>
             </TableRow>
           </TableHead>
