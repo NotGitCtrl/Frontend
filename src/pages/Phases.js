@@ -33,8 +33,11 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { getAllProjects } from "../api/services/projects";
+import { useTranslation } from "react-i18next";
 
 export default function Phases() {
+  const { t } = useTranslation();
+
   const [phases, setPhases] = useState(undefined);
   const [phase, setPhase] = useState("");
   const [projects, setProjects] = useState(undefined);
@@ -128,11 +131,11 @@ export default function Phases() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Phases</h2>
+          <h2>{t("Phase")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add New Phase
+            {t("Add New Phase")}
           </Button>
         </Grid>
       </Grid>
@@ -140,9 +143,9 @@ export default function Phases() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -202,12 +205,14 @@ export default function Phases() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Phase</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Phase")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label={t("Phase Name")}
             type="text"
             value={phase}
             onChange={(e) => setPhase(e.target.value)}
@@ -218,7 +223,7 @@ export default function Phases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -230,7 +235,7 @@ export default function Phases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
-                label="Start Date"
+                label={t("Start Date")}
                 value={startDate}
                 onChange={(date) => setStartDate(date)}
                 renderInput={(params) => <TextField {...params} />}
@@ -241,7 +246,7 @@ export default function Phases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
-                label="End Date"
+                label={t("End Date")}
                 value={endDate}
                 onChange={(date) => setEndDate(date)}
                 renderInput={(params) => <TextField {...params} />}
@@ -249,7 +254,9 @@ export default function Phases() {
             </LocalizationProvider>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Project")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -277,7 +284,7 @@ export default function Phases() {
               setProjectId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
@@ -285,7 +292,7 @@ export default function Phases() {
               !phase || !description || !startDate || !endDate || !projectId
             }
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -303,12 +310,14 @@ export default function Phases() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Phase</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Phase")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Phase"
+            label={t("Phase Name")}
             type="text"
             value={phase}
             onChange={(e) => setPhase(e.target.value)}
@@ -319,7 +328,7 @@ export default function Phases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -331,7 +340,7 @@ export default function Phases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
-                label="Start Date"
+                label={t("Start Date")}
                 value={startDate}
                 onChange={(date) => setStartDate(date)}
                 renderInput={(params) => <TextField {...params} />}
@@ -342,7 +351,7 @@ export default function Phases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
-                label="End Date"
+                label={t("End Date")}
                 value={endDate}
                 onChange={(date) => setEndDate(date)}
                 renderInput={(params) => <TextField {...params} />}
@@ -350,7 +359,9 @@ export default function Phases() {
             </LocalizationProvider>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Project")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -375,20 +386,25 @@ export default function Phases() {
               setDescription("");
               setStartDate("");
               setEndDate("");
-              setProjectId("")
+              setProjectId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
-          <Button onClick={handleUpdate} disabled={!phase || !description || !startDate || !endDate || !projectId}>
-            Save
+          <Button
+            onClick={handleUpdate}
+            disabled={
+              !phase || !description || !startDate || !endDate || !projectId
+            }
+          >
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this state?"
+        message={t("Are you sure you want to delete this phase?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

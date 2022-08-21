@@ -1,8 +1,10 @@
 import { Box, TextField, Button, Grid } from "@mui/material";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 // import axios from "axios";
 
 const OtpInput = () => {
+  const { t } = useTranslation();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -30,11 +32,11 @@ const OtpInput = () => {
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <TextField required id="otp" label="Enter OTP" name="otp" />
+          <TextField required id="otp" label={t("Enter OTP")} name="otp" />
         </Grid>
         <Grid item xs={12} sm={6}>
           <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Verify OTP
+            {t("Verify OTP")}
           </Button>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -43,7 +45,7 @@ const OtpInput = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Resend OTP
+            {t("Resend OTP")}
           </Button>
         </Grid>
       </Grid>

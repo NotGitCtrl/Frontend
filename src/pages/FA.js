@@ -28,8 +28,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { getAllDistricts } from "../api/services/districts";
+import { useTranslation } from "react-i18next";
 
 export default function FA() {
+  const { t } = useTranslation();
+
   const [fas, setFas] = useState(undefined);
   const [fa, setFa] = useState("");
 
@@ -166,11 +169,11 @@ export default function FA() {
         alignItems="center"
       >
         <Grid item>
-          <h2>FAs</h2>
+          <h2>{t("Funding Agency")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add FA
+            {t("Add New Funding Agency")}
           </Button>
         </Grid>
       </Grid>
@@ -178,9 +181,9 @@ export default function FA() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -242,12 +245,14 @@ export default function FA() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add FA</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Funding Agency")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="FA"
+            label={t("Funding Agency Name")}
             type="text"
             value={fa}
             onChange={(e) => setFa(e.target.value)}
@@ -258,7 +263,7 @@ export default function FA() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Address"
+              label={t("Address")}
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -268,12 +273,14 @@ export default function FA() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Country")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={countryId}
-              label="Country"
+              label={t("Country")}
               onChange={(e) => setCountryId(e.target.value)}
             >
               {countries &&
@@ -285,12 +292,12 @@ export default function FA() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={stateId}
-              label="State"
+              label={t("State")}
               onChange={(e) => setStateId(e.target.value)}
             >
               {states &&
@@ -302,12 +309,14 @@ export default function FA() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">District</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("District")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={districtId}
-              label="State"
+              label={t("District")}
               onChange={(e) => setDistrictId(e.target.value)}
             >
               {districts &&
@@ -319,12 +328,14 @@ export default function FA() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Admin</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Funding Agency Admin")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={faAdminId}
-              label="Admin"
+              label={t("Funding Agency Admin")}
               onChange={(e) => setFaAdminId(e.target.value)}
             >
               {faAdmins &&
@@ -348,7 +359,7 @@ export default function FA() {
               setDistrictId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
@@ -361,7 +372,7 @@ export default function FA() {
               !districtId
             }
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -380,12 +391,14 @@ export default function FA() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit FA</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Funding Agency")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="FA"
+            label={t("Funding Agency Name")}
             type="text"
             value={fa}
             onChange={(e) => setFa(e.target.value)}
@@ -396,7 +409,7 @@ export default function FA() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Address"
+              label={t("Address")}
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -406,12 +419,14 @@ export default function FA() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Country")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={countryId}
-              label="Country"
+              label={t("Country")}
               onChange={(e) => setCountryId(e.target.value)}
             >
               {countries &&
@@ -423,12 +438,12 @@ export default function FA() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={stateId}
-              label="State"
+              label={t("State")}
               onChange={(e) => setStateId(e.target.value)}
             >
               {states &&
@@ -440,12 +455,14 @@ export default function FA() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">District</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("District")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={districtId}
-              label="State"
+              label={t("District")}
               onChange={(e) => setDistrictId(e.target.value)}
             >
               {districts &&
@@ -457,12 +474,14 @@ export default function FA() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Admin</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Funding Agency Admin")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={faAdminId}
-              label="Admin"
+              label={t("Funding Agency Admin")}
               onChange={(e) => setFaAdminId(e.target.value)}
             >
               {faAdmins &&
@@ -486,7 +505,7 @@ export default function FA() {
               setDistrictId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleUpdate}
@@ -499,14 +518,14 @@ export default function FA() {
               !districtId
             }
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this state?"
+        message={t("Are you sure you want to delete this funding agency?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

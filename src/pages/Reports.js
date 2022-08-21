@@ -31,8 +31,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { Input } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function Reports() {
+  const { t } = useTranslation();
+
   const [reports, setReports] = useState(undefined);
   const [report, setReport] = useState("");
   const [description, setDescription] = useState("");
@@ -127,11 +130,11 @@ export default function Reports() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Reports</h2>
+          <h2>{t("Report")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Report
+            {t("Add New Report")}
           </Button>
         </Grid>
       </Grid>
@@ -139,9 +142,9 @@ export default function Reports() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -201,12 +204,14 @@ export default function Reports() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Report</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Report")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Report"
+            label={t("Report Name")}
             type="text"
             value={report}
             onChange={(e) => setReport(e.target.value)}
@@ -217,7 +222,7 @@ export default function Reports() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               multiline
@@ -231,7 +236,7 @@ export default function Reports() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Remarks"
+              label={t("Remarks")}
               type="text"
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
@@ -241,12 +246,12 @@ export default function Reports() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Phase</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("Phase")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={phaseId}
-              label="Country"
+              label={t("Phase")}
               onChange={(e) => setPhaseId(e.target.value)}
             >
               {phases &&
@@ -280,13 +285,13 @@ export default function Reports() {
               setDocs(undefined);
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
             disabled={!report || !description || !remarks || !docs || !phaseId}
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -304,12 +309,14 @@ export default function Reports() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Report</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Report")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Report"
+            label={t("Report Name")}
             type="text"
             value={report}
             onChange={(e) => setReport(e.target.value)}
@@ -320,7 +327,7 @@ export default function Reports() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               multiline
@@ -334,7 +341,7 @@ export default function Reports() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Remarks"
+              label={t("Remarks")}
               type="text"
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
@@ -344,12 +351,12 @@ export default function Reports() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Phase</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("Phase")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={phaseId}
-              label="Country"
+              label={t("Phase")}
               onChange={(e) => setPhaseId(e.target.value)}
             >
               {phases &&
@@ -372,20 +379,20 @@ export default function Reports() {
               setDocs(undefined);
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleUpdate}
             disabled={!report || !description || !remarks || !docs || !phaseId}
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this report?"
+        message={t("Are you sure you want to delete this report?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

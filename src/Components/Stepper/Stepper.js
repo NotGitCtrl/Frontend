@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
 import SignUp from "../../pages/auth/Signup";
 import OtpInput from "../../pages/auth/OtpInput";
+import { useTranslation } from "react-i18next";
 
 const steps = [
   "Select campaign settings",
@@ -16,6 +17,7 @@ const steps = [
 ];
 
 export default function SignUpStepper() {
+  const { t } = useTranslation();
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -29,6 +31,9 @@ export default function SignUpStepper() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const Finish = t("Finish");
+  const Next = t("Next");
 
   return (
     <Container sx={{ mt: 3 }} maxWidth="md">
@@ -64,12 +69,12 @@ export default function SignUpStepper() {
               onClick={handleBack}
               sx={{ mr: 1 }}
             >
-              Back
+              {t("Back")}
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
 
             <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              {activeStep === steps.length - 1 ? Finish : Next}
             </Button>
           </Box>
         </React.Fragment>

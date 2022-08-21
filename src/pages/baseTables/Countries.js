@@ -26,8 +26,11 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../../Components/common/DashboardWrapper";
+import { useTranslation } from "react-i18next";
 
 export default function Countries() {
+  const { t } = useTranslation();
+
   const [countries, setCountries] = useState(undefined);
   const [country, setCountry] = useState("");
   const [selectedCountryId, setSelectedCountryId] = useState("");
@@ -51,7 +54,7 @@ export default function Countries() {
       setCountry("");
       setShowAddModal(false);
       fetchAllCountries();
-      snackbarOpen(response.status,response.message)
+      snackbarOpen(response.status, response.message);
     }
   };
 
@@ -62,7 +65,7 @@ export default function Countries() {
       setSelectedCountryId("");
       setShowEditModal(false);
       fetchAllCountries();
-      snackbarOpen(response.status,response.message)
+      snackbarOpen(response.status, response.message);
     }
   };
 
@@ -73,7 +76,7 @@ export default function Countries() {
       setSelectedCountryId("");
       setShowDeleteModal(false);
       fetchAllCountries();
-      snackbarOpen(response.status,response.message)
+      snackbarOpen(response.status, response.message);
     }
   };
 
@@ -82,20 +85,24 @@ export default function Countries() {
   }, []);
 
   const snackbarOpen = (status, message) => {
-    setOpen(true)
+    setOpen(true);
     setStatus(status);
     setMessage(message);
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-
   return (
     <DashboardWrapper>
-      <SnackBarComponent status={status} message={message} open={open} handleClose={handleClose} />
-      
+      <SnackBarComponent
+        status={status}
+        message={message}
+        open={open}
+        handleClose={handleClose}
+      />
+
       <Grid
         container
         spacing={1}
@@ -103,11 +110,11 @@ export default function Countries() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Countries</h2>
+          <h2>{t("Country")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Country
+            {t("Add New Country")}
           </Button>
         </Grid>
       </Grid>
@@ -115,9 +122,9 @@ export default function Countries() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -169,12 +176,14 @@ export default function Countries() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Country</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Country")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Country"
+            label={t("Country Name")}
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
@@ -190,10 +199,10 @@ export default function Countries() {
               setCountry("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleAdd} disabled={!country}>
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -207,12 +216,14 @@ export default function Countries() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Country</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Country")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
+            label={t("Country Name")}
             autoFocus
-            label="Country"
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
@@ -228,17 +239,17 @@ export default function Countries() {
               setCountry("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleUpdate} disabled={!country}>
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this country?"
+        message={t("Are you sure you want to delete this country?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

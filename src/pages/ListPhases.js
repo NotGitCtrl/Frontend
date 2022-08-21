@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../Components/common/ConfirmationModal";
-import {  getAllPhases, addPhase, updatePhase, deletePhase } from "../api/services/phases";
+import {
+  getAllPhases,
+  addPhase,
+  updatePhase,
+  deletePhase,
+} from "../api/services/phases";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -25,13 +30,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { getAllDistricts } from "../api/services/districts";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useParams } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 
 export default function ListPhases() {
+  const { t } = useTranslation();
+
   const [phases, setPhases] = useState(undefined);
   const [phase, setPhase] = useState("");
 
@@ -48,7 +55,7 @@ export default function ListPhases() {
   const fetchAllPhases = async () => {
     const response = await getAllPhases(id);
     if (response.status === "success") {
-      console.log(response)
+      console.log(response);
       setPhases(response.data);
     }
   };
@@ -59,7 +66,7 @@ export default function ListPhases() {
       description: description,
       startDate: startDate,
       endDate: endDate,
-      projectId: id
+      projectId: id,
     });
     if (response.status === "success") {
       setPhase("");
@@ -76,7 +83,7 @@ export default function ListPhases() {
       name: phase,
       description: description,
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
     });
     if (response.status === "success") {
       setPhase("");
@@ -105,7 +112,7 @@ export default function ListPhases() {
   }, []);
 
   return (
-      <>
+    <>
       <Grid
         container
         spacing={1}
@@ -113,11 +120,11 @@ export default function ListPhases() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Phases</h2>
+          <h2>{t("Phase")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add New Phase
+            {t("Add New Phase")}
           </Button>
         </Grid>
       </Grid>
@@ -125,9 +132,9 @@ export default function ListPhases() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -185,12 +192,14 @@ export default function ListPhases() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Phase</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Phase")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label={t("Phase Name")}
             type="text"
             value={phase}
             onChange={(e) => setPhase(e.target.value)}
@@ -201,7 +210,7 @@ export default function ListPhases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -210,28 +219,27 @@ export default function ListPhases() {
               size="small"
             />
           </FormControl>
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            onChange={date => setStartDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("Start Date")}
+                value={startDate}
+                onChange={(date) => setStartDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
 
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="End Date"
-            value={endDate}
-            onChange={date => setEndDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
-         
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("End Date")}
+                value={endDate}
+                onChange={(date) => setEndDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -243,18 +251,13 @@ export default function ListPhases() {
               setEndDate("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
-            disabled={
-              !phase ||
-              !description ||
-              !startDate ||
-              !endDate
-            }
+            disabled={!phase || !description || !startDate || !endDate}
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -271,12 +274,14 @@ export default function ListPhases() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Phase</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Phase")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Phase"
+            label={t("Phase Name")}
             type="text"
             value={phase}
             onChange={(e) => setPhase(e.target.value)}
@@ -287,7 +292,7 @@ export default function ListPhases() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -296,30 +301,27 @@ export default function ListPhases() {
               size="small"
             />
           </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            onChange={date => setStartDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("Start Date")}
+                value={startDate}
+                onChange={(date) => setStartDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
 
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="End Date"
-            value={endDate}
-            onChange={date => setEndDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
-        
-          
-          
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("End Date")}
+                value={endDate}
+                onChange={(date) => setEndDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -331,23 +333,17 @@ export default function ListPhases() {
               setEndDate("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
-          <Button
-            onClick={handleUpdate}
-            disabled={
-              !phase ||
-              !description 
-            }
-          >
-            Save
+          <Button onClick={handleUpdate} disabled={!phase || !description}>
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this state?"
+        message={t("Are you sure you want to delete this phase?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

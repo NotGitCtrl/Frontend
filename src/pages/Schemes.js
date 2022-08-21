@@ -27,8 +27,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { Input } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function Schemes() {
+  const { t } = useTranslation();
+
   const [schemes, setSchemes] = useState(undefined);
   const [scheme, setScheme] = useState("");
   const [description, setDescription] = useState("");
@@ -102,11 +105,11 @@ export default function Schemes() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Schemes</h2>
+          <h2>{t("Scheme")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Scheme
+            {t("Add New Scheme")}
           </Button>
         </Grid>
       </Grid>
@@ -114,9 +117,9 @@ export default function Schemes() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -172,12 +175,14 @@ export default function Schemes() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Scheme</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Scheme")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Scheme"
+            label={t("Scheme")}
             type="text"
             value={scheme}
             onChange={(e) => setScheme(e.target.value)}
@@ -188,7 +193,7 @@ export default function Schemes() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               multiline
@@ -220,13 +225,10 @@ export default function Schemes() {
               setDocs(undefined);
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
-          <Button
-            onClick={handleAdd}
-            disabled={!scheme || !description}
-          >
-            Add
+          <Button onClick={handleAdd} disabled={!scheme || !description}>
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -242,12 +244,14 @@ export default function Schemes() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Scheme</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Scheme")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Scheme"
+            label={t("Scheme")}
             type="text"
             value={scheme}
             onChange={(e) => setScheme(e.target.value)}
@@ -258,7 +262,7 @@ export default function Schemes() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -277,20 +281,17 @@ export default function Schemes() {
               setDocs(undefined);
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
-          <Button
-            onClick={handleUpdate}
-            disabled={!scheme || !description}
-          >
-            Save
+          <Button onClick={handleUpdate} disabled={!scheme || !description}>
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this scheme?"
+        message={t("Are you sure you want to delete this scheme?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

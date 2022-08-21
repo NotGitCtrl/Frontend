@@ -10,9 +10,12 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 
 const InviteMember = () => {
+  const { t } = useTranslation();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -30,11 +33,11 @@ const InviteMember = () => {
         alignItems="center"
       >
         <Grid item>
-          <h2>Invite Member</h2>
+          <h2>{t("Invite Member")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Send Invite
+            {t("Send Invite")}
           </Button>
         </Grid>
       </Grid>
@@ -46,13 +49,15 @@ const InviteMember = () => {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Invite Member</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Invite Member")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="First Name"
+              label={t("First Name")}
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -64,7 +69,7 @@ const InviteMember = () => {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Last Name"
+              label={t("Last Name")}
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -76,7 +81,7 @@ const InviteMember = () => {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Email"
+              label={t("Email")}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -92,13 +97,13 @@ const InviteMember = () => {
               setShowAddModal(false);
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
             disabled={!firstName || !lastName || !email}
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>

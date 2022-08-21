@@ -45,6 +45,10 @@ const languages = [
     code: "hi",
     name: "हिन्दी",
   },
+  {
+    code: "ta",
+    name: "தமிழ்",
+  },
 ];
 
 export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
@@ -106,7 +110,9 @@ export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
       <MenuItem onClick={handleProfileMenuClose}>
         {getStorage("firstName") + " " + getStorage("lastName")}
       </MenuItem>
-      <MenuItem onClick={() => setShowLogoutDialog(true)}>Logout</MenuItem>
+      <MenuItem onClick={() => setShowLogoutDialog(true)}>
+        {t("Logout")}
+      </MenuItem>
     </Menu>
   );
 

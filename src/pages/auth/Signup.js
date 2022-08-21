@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../api/services/auth";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Copyright(props) {
   return (
@@ -34,6 +35,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const { t } = useTranslation();
   let navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,7 +70,7 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            {t("Sign up")}
           </Typography>
           <Box
             component="form"
@@ -84,7 +86,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label={t("First Name")}
                   autoFocus
                 />
               </Grid>
@@ -93,7 +95,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="surname"
-                  label="Last Name"
+                  label={t("Last Name")}
                   name="surname"
                   autoComplete="family-name"
                 />
@@ -103,7 +105,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="dob"
-                  label="Date Of Birth"
+                  label={t("Date Of Birth")}
                   name="dob"
                 />
               </Grid>
@@ -112,7 +114,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="gender"
-                  label="Gender"
+                  label={t("Gender")}
                   name="gender"
                 />
               </Grid>
@@ -121,7 +123,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={t("Email Address")}
                   name="email"
                   autoComplete="email"
                 />
@@ -131,7 +133,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label={t("Password")}
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -142,7 +144,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="confirmpassword"
-                  label="Confirm Password"
+                  label={t("Confirm Password")}
                   type="password"
                   id="confirmpassword"
                   autoComplete="new-password"
@@ -155,12 +157,12 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {t("Sign up")}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/login" variant="body2">
-                  Already have an account? Sign in
+                  {t("Already have an account? Sign in")}
                 </Link>
               </Grid>
             </Grid>

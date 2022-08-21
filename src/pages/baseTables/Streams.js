@@ -26,8 +26,11 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../../Components/common/DashboardWrapper";
+import { useTranslation } from "react-i18next";
 
 export default function Streams() {
+  const { t } = useTranslation();
+
   const [streams, setStreams] = useState(undefined);
   const [streamName, setStreamName] = useState("");
   const [streamDesc, setStreamDesc] = useState("");
@@ -103,11 +106,11 @@ export default function Streams() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Streams</h2>
+          <h2>{t("Streams")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Stream
+            {t("Add New Stream")}
           </Button>
         </Grid>
       </Grid>
@@ -115,11 +118,11 @@ export default function Streams() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Description</TableCell>
-              <TableCell align="left">Courses</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Description")}</TableCell>
+              <TableCell align="left">{t("Courses")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -174,13 +177,15 @@ export default function Streams() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Stream</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Stream")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <FormControl fullWidth size="small" sx={{ mb: 4 }}>
             <TextField
               autoFocus
-              label="Name"
+              label={t("Stream Name")}
               type="text"
               value={streamName}
               onChange={(e) => setStreamName(e.target.value)}
@@ -192,7 +197,7 @@ export default function Streams() {
           <FormControl fullWidth size="small" sx={{ mb: 4 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={streamDesc}
               onChange={(e) => setStreamDesc(e.target.value)}
@@ -204,7 +209,7 @@ export default function Streams() {
           <FormControl fullWidth size="small" sx={{ mb: 0 }}>
             <TextField
               autoFocus
-              label="Courses"
+              label={t("Courses")}
               type="text"
               value={streamCourses}
               onChange={(e) => setStreamCourses(e.target.value)}
@@ -221,13 +226,13 @@ export default function Streams() {
               clearFields();
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
             disabled={!streamName || !streamDesc || !streamCourses}
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -241,13 +246,15 @@ export default function Streams() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Stream</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Stream")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <FormControl fullWidth size="small" sx={{ mb: 4 }}>
             <TextField
               autoFocus
-              label="Name"
+              label={t("Stream Name")}
               type="text"
               value={streamName}
               onChange={(e) => setStreamName(e.target.value)}
@@ -259,7 +266,7 @@ export default function Streams() {
           <FormControl fullWidth size="small" sx={{ mb: 4 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={streamDesc}
               onChange={(e) => setStreamDesc(e.target.value)}
@@ -271,7 +278,7 @@ export default function Streams() {
           <FormControl fullWidth size="small" sx={{ mb: 0 }}>
             <TextField
               autoFocus
-              label="Courses"
+              label={t("Courses")}
               type="text"
               value={streamCourses}
               onChange={(e) => setStreamCourses(e.target.value)}
@@ -288,20 +295,20 @@ export default function Streams() {
               clearFields();
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleUpdate}
             disabled={!streamName || !streamDesc || !streamCourses}
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this stream?"
+        message={t("Are you sure you want to delete this stream?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />
