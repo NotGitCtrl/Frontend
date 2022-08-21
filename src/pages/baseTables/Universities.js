@@ -30,8 +30,11 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../../Components/common/DashboardWrapper";
+import { useTranslation } from "react-i18next";
 
 export default function Universities() {
+  const { t } = useTranslation();
+
   const [universities, setUniversities] = useState(undefined);
   const [university, setUniversity] = useState("");
   const [uniAdmins, setUniAdmins] = useState(undefined);
@@ -107,11 +110,11 @@ export default function Universities() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Universities</h2>
+          <h2>{t("University")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add University
+            {t("Add New University")}
           </Button>
         </Grid>
       </Grid>
@@ -119,9 +122,9 @@ export default function Universities() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -175,12 +178,14 @@ export default function Universities() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add University</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New University")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="University"
+            label={t("University Name")}
             type="text"
             value={university}
             onChange={(e) => setUniversity(e.target.value)}
@@ -189,7 +194,7 @@ export default function Universities() {
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Admin</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("Admin")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -214,10 +219,10 @@ export default function Universities() {
               setUniAdminId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleAdd} disabled={!university || !uniAdminId}>
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -232,12 +237,14 @@ export default function Universities() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit University</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit University")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="University"
+            label={t("University Name")}
             type="text"
             value={university}
             onChange={(e) => setUniversity(e.target.value)}
@@ -246,12 +253,12 @@ export default function Universities() {
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Admin</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("Admin")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={uniAdminId}
-              label="Admin"
+              label={t("Admin")}
               onChange={(e) => setUniAdminId(e.target.value)}
             >
               {uniAdmins &&
@@ -271,17 +278,17 @@ export default function Universities() {
               setUniAdminId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleUpdate} disabled={!university || !uniAdminId}>
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this state?"
+        message={t("Are you sure you want to delete this university?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

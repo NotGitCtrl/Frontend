@@ -28,7 +28,6 @@ function Copyright(props) {
 
 const Profile = () => {
   const { isLoggedIn } = React.useContext(AppContext);
-  console.log(isLoggedIn);
 
   return isLoggedIn ? (
     <DashboardWrapper>

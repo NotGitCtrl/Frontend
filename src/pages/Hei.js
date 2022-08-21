@@ -27,8 +27,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { getAllStreams } from "../api/services/streams";
+import { useTranslation } from "react-i18next";
 
 export default function Hei() {
+  const { t } = useTranslation();
+
   const [heis, setHeis] = useState(undefined);
   const [hei, setHei] = useState("");
   const [selectedHEIId, setSelectedHEIId] = useState("");
@@ -225,11 +228,11 @@ export default function Hei() {
         alignItems="center"
       >
         <Grid item>
-          <h2>HEIs</h2>
+          <h2>{t("HEI")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add HEI
+            {t("Add New HEI")}
           </Button>
         </Grid>
       </Grid>
@@ -237,9 +240,9 @@ export default function Hei() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -307,12 +310,12 @@ export default function Hei() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add HEI</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>{t("Add New HEI")}</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="HEI"
+            label={t("HEI Name")}
             type="text"
             value={hei}
             onChange={(e) => setHei(e.target.value)}
@@ -323,7 +326,7 @@ export default function Hei() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Address"
+              label={t("Address")}
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -333,7 +336,9 @@ export default function Hei() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Country")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -350,7 +355,7 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -367,7 +372,9 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">District</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("District")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -384,7 +391,9 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">HEI Admin</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("HEI Admin")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -401,7 +410,9 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">University</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("University")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -436,7 +447,9 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Courses</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Courses")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -470,7 +483,7 @@ export default function Hei() {
               setAddress("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
@@ -484,7 +497,7 @@ export default function Hei() {
               !address
             }
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -507,12 +520,12 @@ export default function Hei() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit HEI</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>{t("Edit HEI")}</DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="HEI"
+            label={t("HEI Name")}
             type="text"
             value={hei}
             onChange={(e) => setHei(e.target.value)}
@@ -523,7 +536,7 @@ export default function Hei() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Address"
+              label={t("Address")}
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -533,7 +546,9 @@ export default function Hei() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Country")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -550,7 +565,7 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -567,7 +582,9 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">District</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("District")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -584,12 +601,14 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">HEI Admin</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("HEI Admin")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={heiAdminId}
-              label="HEI Admin"
+              label={t("HEI Admin")}
               onChange={(e) => setHeiAdminId(e.target.value)}
             >
               {heiAdmins &&
@@ -601,7 +620,9 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">University</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("University")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -636,7 +657,9 @@ export default function Hei() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Courses</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Courses")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -670,7 +693,7 @@ export default function Hei() {
               setAddress("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleUpdate}
@@ -684,14 +707,14 @@ export default function Hei() {
               !address
             }
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this HEI?"
+        message={t("Are you sure you want to delete this HEI?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

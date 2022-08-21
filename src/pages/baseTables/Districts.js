@@ -30,8 +30,11 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../../Components/common/DashboardWrapper";
+import { useTranslation } from "react-i18next";
 
 export default function Districts() {
+  const { t } = useTranslation();
+
   const [districts, setDistricts] = useState(undefined);
   const [district, setDistrict] = useState("");
   const [states, setStates] = useState(undefined);
@@ -104,11 +107,11 @@ export default function Districts() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Districts</h2>
+          <h2>{t("District")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add District
+            {t("Add New District")}
           </Button>
         </Grid>
       </Grid>
@@ -116,9 +119,9 @@ export default function Districts() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -172,12 +175,14 @@ export default function Districts() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add District</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New District")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="District"
+            label={t("District Name")}
             type="text"
             value={district}
             onChange={(e) => setDistrict(e.target.value)}
@@ -186,7 +191,7 @@ export default function Districts() {
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -211,10 +216,10 @@ export default function Districts() {
               setStateId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleAdd} disabled={!district || !stateId}>
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -229,12 +234,14 @@ export default function Districts() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit District</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit District")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="District"
+            label={t("District Name")}
             type="text"
             value={district}
             onChange={(e) => setDistrict(e.target.value)}
@@ -243,7 +250,7 @@ export default function Districts() {
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -268,17 +275,17 @@ export default function Districts() {
               setStateId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleUpdate} disabled={!district || !stateId}>
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this district?"
+        message={t("Are you sure you want to delete this district?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

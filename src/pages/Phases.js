@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../Components/common/ConfirmationModal";
-import {  getAllPhases, addPhase, updatePhase, deletePhase } from "../api/services/phases";
+import {
+  getAllPhases,
+  addPhase,
+  updatePhase,
+  deletePhase,
+} from "../api/services/phases";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -24,15 +29,19 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
-import { getAllDistricts } from "../api/services/districts";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { getAllProjects } from "../api/services/projects";
+import { useTranslation } from "react-i18next";
 
+export default function Phases() {
+  const { t } = useTranslation();
 
-export default function Phase() {
   const [phases, setPhases] = useState(undefined);
   const [phase, setPhase] = useState("");
+  const [projects, setProjects] = useState(undefined);
+  const [projectId, setProjectId] = useState("");
 
   const [description, setDescription] = useState("");
 
@@ -50,18 +59,27 @@ export default function Phase() {
     }
   };
 
+  const fetchAllProjects = async () => {
+    const response = await getAllProjects();
+    if (response.status === "success") {
+      setProjects(response.data);
+    }
+  };
+
   const handleAdd = async () => {
     const response = await addPhase({
       name: phase,
       description: description,
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      projectId: projectId,
     });
     if (response.status === "success") {
       setPhase("");
       setDescription("");
       setStartDate(null);
       setEndDate(null);
+      setProjectId("");
       setShowAddModal(false);
       fetchAllPhases();
     }
@@ -72,13 +90,15 @@ export default function Phase() {
       name: phase,
       description: description,
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      projectId: projectId,
     });
     if (response.status === "success") {
       setPhase("");
       setDescription("");
       setStartDate(null);
       setEndDate(null);
+      setProjectId("");
       setShowEditModal(false);
       fetchAllPhases();
     }
@@ -91,6 +111,7 @@ export default function Phase() {
       setDescription("");
       setStartDate("");
       setEndDate("");
+      setProjectId("");
       setShowDeleteModal(false);
       fetchAllPhases();
     }
@@ -98,6 +119,7 @@ export default function Phase() {
 
   useEffect(() => {
     fetchAllPhases();
+    fetchAllProjects();
   }, []);
 
   return (
@@ -109,11 +131,11 @@ export default function Phase() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Phases</h2>
+          <h2>{t("Phase")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add New Phase
+            {t("Add New Phase")}
           </Button>
         </Grid>
       </Grid>
@@ -121,9 +143,9 @@ export default function Phase() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -149,6 +171,7 @@ export default function Phase() {
                         setDescription(row.description);
                         setStartDate(row.startDate);
                         setEndDate(row.endDate);
+                        setProjectId(row.projectId);
                       }}
                     >
                       <EditIcon fontSize="small" />
@@ -177,16 +200,19 @@ export default function Phase() {
           setDescription("");
           setStartDate("");
           setEndDate("");
+          setProjectId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Phase</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Phase")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label={t("Phase Name")}
             type="text"
             value={phase}
             onChange={(e) => setPhase(e.target.value)}
@@ -197,7 +223,7 @@ export default function Phase() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -206,28 +232,46 @@ export default function Phase() {
               size="small"
             />
           </FormControl>
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            onChange={date => setStartDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("Start Date")}
+                value={startDate}
+                onChange={(date) => setStartDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
 
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="End Date"
-            value={endDate}
-            onChange={date => setEndDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
-         
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("End Date")}
+                value={endDate}
+                onChange={(date) => setEndDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <InputLabel id="demo-simple-select-label">
+              {t("Project")}
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={projectId}
+              label="Project"
+              onChange={(e) => setProjectId(e.target.value)}
+            >
+              {projects &&
+                projects.map((project) => (
+                  <MenuItem key={project._id} value={project._id}>
+                    {project.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -237,20 +281,18 @@ export default function Phase() {
               setDescription("");
               setStartDate("");
               setEndDate("");
+              setProjectId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
             disabled={
-              !phase ||
-              !description ||
-              !startDate ||
-              !endDate
+              !phase || !description || !startDate || !endDate || !projectId
             }
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -263,16 +305,19 @@ export default function Phase() {
           setDescription("");
           setStartDate("");
           setEndDate("");
+          setProjectId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Phase</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Phase")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Phase"
+            label={t("Phase Name")}
             type="text"
             value={phase}
             onChange={(e) => setPhase(e.target.value)}
@@ -283,7 +328,7 @@ export default function Phase() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -292,30 +337,46 @@ export default function Phase() {
               size="small"
             />
           </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="Start Date"
-            value={startDate}
-            onChange={date => setStartDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("Start Date")}
+                value={startDate}
+                onChange={(date) => setStartDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
 
-        <FormControl fullWidth size="small" sx={{ mt: 3 }}> 
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <DatePicker
-            label="End Date"
-            value={endDate}
-            onChange={date => setEndDate(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        </FormControl>
-        
-          
-          
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <DatePicker
+                label={t("End Date")}
+                value={endDate}
+                onChange={(date) => setEndDate(date)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+            <InputLabel id="demo-simple-select-label">
+              {t("Project")}
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={projectId}
+              label="Project"
+              onChange={(e) => setProjectId(e.target.value)}
+            >
+              {projects &&
+                projects.map((project) => (
+                  <MenuItem key={project._id} value={project._id}>
+                    {project.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -325,25 +386,25 @@ export default function Phase() {
               setDescription("");
               setStartDate("");
               setEndDate("");
+              setProjectId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleUpdate}
             disabled={
-              !phase ||
-              !description 
+              !phase || !description || !startDate || !endDate || !projectId
             }
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this state?"
+        message={t("Are you sure you want to delete this phase?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

@@ -30,8 +30,11 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
+import { useTranslation } from "react-i18next";
 
 export default function Transactions() {
+  const { t } = useTranslation();
+
   const [transactions, setTransactions] = useState(undefined);
   const [transaction, setTransaction] = useState("");
   const [description, setDescription] = useState("");
@@ -127,11 +130,11 @@ export default function Transactions() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Transactions</h2>
+          <h2>{t("Transaction")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Transaction
+            {t("Add New Transaction")}
           </Button>
         </Grid>
       </Grid>
@@ -139,9 +142,9 @@ export default function Transactions() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -201,12 +204,14 @@ export default function Transactions() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Transaction</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Transaction")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label={t("Transaction Name")}
             type="text"
             value={transaction}
             onChange={(e) => setTransaction(e.target.value)}
@@ -217,7 +222,7 @@ export default function Transactions() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               multiline
@@ -241,7 +246,7 @@ export default function Transactions() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Amount"
+              label={t("Amount")}
               type="text"
               value={amount}
               inputProps={{ inputMode: "decimal" }}
@@ -254,7 +259,7 @@ export default function Transactions() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="UTR"
+              label={t("UTR")}
               type="text"
               value={utr}
               onChange={(e) => setUtr(e.target.value)}
@@ -264,7 +269,9 @@ export default function Transactions() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Project")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -292,7 +299,7 @@ export default function Transactions() {
               setProjectId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
@@ -300,7 +307,7 @@ export default function Transactions() {
               !transaction || !description || !projectId || !amount || !utr
             }
           >
-            Add
+            {t(" Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -318,12 +325,14 @@ export default function Transactions() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Transaction</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Transaction")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label={t("Transaction Name")}
             type="text"
             value={transaction}
             onChange={(e) => setTransaction(e.target.value)}
@@ -334,7 +343,7 @@ export default function Transactions() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               multiline
@@ -348,7 +357,7 @@ export default function Transactions() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Amount"
+              label={t("Amount")}
               type="text"
               value={amount}
               inputProps={{ inputMode: "decimal" }}
@@ -361,7 +370,7 @@ export default function Transactions() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="UTR"
+              label={t("UTR")}
               type="text"
               value={utr}
               onChange={(e) => setUtr(e.target.value)}
@@ -371,7 +380,9 @@ export default function Transactions() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Project")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -399,7 +410,7 @@ export default function Transactions() {
               setProjectId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleUpdate}
@@ -407,7 +418,7 @@ export default function Transactions() {
               !transaction || !description || !projectId || !amount || !utr
             }
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
