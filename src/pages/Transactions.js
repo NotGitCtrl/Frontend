@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ConfirmationModal from "../Components/common/ConfirmationModal";
-import { getAllStates } from "../api/services/states";
+import { getAllProjects } from "../api/services/projects";
 import {
   getAllTransactions,
   addTransaction,
@@ -57,7 +57,7 @@ export default function Transactions() {
   };
 
   const fetchAllProjects = async () => {
-    const response = await getAllStates();
+    const response = await getAllProjects();
     if (response.status === "success") {
       setProjects(response.data);
     }
