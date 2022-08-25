@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { setStorage } from "../../utils/localstorage-utils";
 import { loginUser } from "../../api/services/auth";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Copyright(props) {
   return (
@@ -38,6 +39,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const { t } = useTranslation();
   let navigate = useNavigate();
   const { setIsLoggedIn, setRole } = React.useContext(AppContext);
 
@@ -76,7 +78,7 @@ export default function Login() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Login
+            {t("Login")}
           </Typography>
           <Box
             component="form"
@@ -89,7 +91,7 @@ export default function Login() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={t("Email Address")}
               name="email"
               autoComplete="email"
               autoFocus
@@ -99,14 +101,14 @@ export default function Login() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={t("Password")}
               type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label={t("Remember me")}
             />
             <Button
               type="submit"
@@ -114,15 +116,15 @@ export default function Login() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Login
+              {t("Login")}
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link to="/forgot-password">Forgot password?</Link>
+                <Link to="/forgot-password">{t("Forgot password?")}</Link>
               </Grid>
               <Grid item>
                 <Link to="/" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {t("Don't have an account? Sign Up")}
                 </Link>
               </Grid>
             </Grid>

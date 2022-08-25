@@ -30,8 +30,12 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../../Components/common/DashboardWrapper";
+import { useTranslation } from "react-i18next";
+import SnackBarComponent from "../../Components/common/SnackBarComponent";
 
 export default function States() {
+  const { t } = useTranslation();
+
   const [states, setStates] = useState(undefined);
   const [state, setState] = useState("");
   const [countries, setCountries] = useState(undefined);
@@ -40,6 +44,10 @@ export default function States() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState("");
+  const [message, setMessage] = useState("");
 
   const fetchAllStates = async () => {
     const response = await getAllStates();
@@ -62,6 +70,7 @@ export default function States() {
       setCountryId("");
       setShowAddModal(false);
       fetchAllStates();
+      snackbarOpen(response.status, response.message);
     }
   };
 
@@ -76,6 +85,7 @@ export default function States() {
       setSelectedStateId("");
       setShowEditModal(false);
       fetchAllStates();
+      snackbarOpen(response.status, response.message);
     }
   };
 
@@ -87,7 +97,18 @@ export default function States() {
       setSelectedStateId("");
       setShowDeleteModal(false);
       fetchAllStates();
+      snackbarOpen(response.status, response.message);
     }
+  };
+
+  const snackbarOpen = (status, message) => {
+    setOpen(true);
+    setStatus(status);
+    setMessage(message);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -97,6 +118,13 @@ export default function States() {
 
   return (
     <DashboardWrapper>
+      <SnackBarComponent
+        status={status}
+        message={message}
+        open={open}
+        handleClose={handleClose}
+      />
+
       <Grid
         container
         spacing={1}
@@ -104,11 +132,11 @@ export default function States() {
         alignItems="center"
       >
         <Grid item>
-          <h2>States</h2>
+          <h2>{t("State")}</h2>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add State
+            {t("Add New State")}
           </Button>
         </Grid>
       </Grid>
@@ -116,9 +144,9 @@ export default function States() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -141,12 +169,12 @@ export default function States() {
                         setShowEditModal(true);
                         setState(row.name);
                         setSelectedStateId(row._id);
-                        setCountryId(row.country);
+                        setCountryId(row.country._id);
                       }}
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
-                    <IconButton
+                    {/* <IconButton
                       onClick={() => {
                         setShowDeleteModal(true);
                         setState(row.name);
@@ -154,7 +182,7 @@ export default function States() {
                       }}
                     >
                       <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    </IconButton> */}
                   </TableCell>
                 </TableRow>
               ))}
@@ -172,12 +200,14 @@ export default function States() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add State</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New State")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="State"
+            label={t("State Name")}
             type="text"
             value={state}
             onChange={(e) => setState(e.target.value)}
@@ -186,7 +216,9 @@ export default function States() {
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Country")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -211,10 +243,10 @@ export default function States() {
               setCountryId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleAdd} disabled={!state || !countryId}>
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -229,12 +261,14 @@ export default function States() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit State</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit State")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="State"
+            label={t("State Name")}
             type="text"
             value={state}
             onChange={(e) => setState(e.target.value)}
@@ -243,7 +277,9 @@ export default function States() {
             size="small"
           />
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Country</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("Country")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -268,17 +304,17 @@ export default function States() {
               setCountryId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button onClick={handleUpdate} disabled={!state || !countryId}>
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this state?"
+        message={t("Are you sure you want to delete this state?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

@@ -18,15 +18,13 @@ import Projects from "./pages/Projects";
 import Reports from "./pages/Reports";
 import InviteMember from "./pages/InviteMember";
 import ProjectDetail from "./pages/ProjectDetail";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
-  // return <ForgotPass />;
-  // return <Login />;
-  // return <SignUpStepper />;
-
   return (
     <BrowserRouter>
       <Routes>
+        <Route index element={<LandingPage />} />
         <Route path="/" element={<SignUpStepper />} />
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
@@ -34,16 +32,18 @@ function App() {
         <Route path="invite-member" element={<InviteMember />} />
         <Route path="/project-detail/:id" element={<ProjectDetail />} />
 
-        <Route path="/dashboard/countries" element={<Countries />} />
-        <Route path="/dashboard/states" element={<States />} />
-        <Route path="/dashboard/districts" element={<Districts />} />
-        <Route path="/dashboard/streams" element={<Streams />} />
-        <Route path="/dashboard/universities" element={<Universities />} />
-        <Route path="/dashboard/schemes" element={<Schemes />} />
-        <Route path="/dashboard/transactions" element={<Transactions />} />
-        <Route path="/dashboard/phases" element={<Phases />} />
-        <Route path="/dashboard/projects" element={<Projects />} />
-        <Route path="/dashboard/reports" element={<Reports />} />
+        <Route path="/dashboard">
+          <Route path="countries" element={<Countries />} />
+          <Route path="states" element={<States />} />
+          <Route path="districts" element={<Districts />} />
+          <Route path="streams" element={<Streams />} />
+          <Route path="universities" element={<Universities />} />
+          <Route path="schemes" element={<Schemes />} />
+          <Route path="transactions" element={<Transactions />} />
+          <Route path="phases" element={<Phases />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="reports" element={<Reports />} />
+        </Route>
 
         <Route path="/admin/hei" element={<Hei />} />
         <Route path="/admin/fa" element={<FA />} />

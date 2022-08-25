@@ -36,8 +36,11 @@ import { FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/Context";
+import { useTranslation } from "react-i18next";
 
 export default function Projects() {
+  const { t } = useTranslation();
+
   const [projects, setProjects] = useState(undefined);
 
   const [project, setProject] = useState("");
@@ -144,28 +147,31 @@ export default function Projects() {
         alignItems="center"
       >
         <Grid item>
-          <h2>Projects</h2>
+          <h2>{t("Project")}</h2>
         </Grid>
-        { role==="fa-admin" && (
-            
-              <Button variant="contained" onClick={() => setShowAddModal(true)}>
-                Add Project
-              </Button>
-        )}
+
+        <Grid item>
+          { role==="fa-admin" && (
+          <Button variant="contained" onClick={() => setShowAddModal(true)}>
+            {t("Add New Project")}
+          </Button>
+      
+           )}
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: 30 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell align="left">Name</TableCell>
+              <TableCell>{t("Sr. No.")}</TableCell>
+              <TableCell align="left">{t("Name")}</TableCell>
               <TableCell align="left">Scheme</TableCell>
               { role!=="hei-admin" && (
                                <TableCell align="left">HEI</TableCell>
                                 
                   )} 
               
-              <TableCell align="left">Actions</TableCell>
+              <TableCell align="left">{t("Actions")}</TableCell>
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -248,12 +254,14 @@ export default function Projects() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Add Project</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Add New Project")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label={t("Project Name")}
             type="text"
             value={project}
             onChange={(e) => setProject(e.target.value)}
@@ -264,7 +272,7 @@ export default function Projects() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               multiline
@@ -277,7 +285,7 @@ export default function Projects() {
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <FormLabel id="demo-controlled-radio-buttons-group">
-              Category
+              {t("Category")}
             </FormLabel>
             <RadioGroup
               row
@@ -289,27 +297,27 @@ export default function Projects() {
               <FormControlLabel
                 value="hardware"
                 control={<Radio />}
-                label="Hardware"
+                label={t("Hardware")}
               />
               <FormControlLabel
                 value="software"
                 control={<Radio />}
-                label="Software"
+                label={t("Software")}
               />
               <FormControlLabel
                 value="hybrid"
                 control={<Radio />}
-                label="Hybrid"
+                label={t("Hybrid")}
               />
             </RadioGroup>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Scheme</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("Scheme")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={schemeId}
-              label="Scheme"
+              label={t("Scheme")}
               onChange={(e) => setSchemeId(e.target.value)}
             >
               {schemes &&
@@ -321,12 +329,14 @@ export default function Projects() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">HEI</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("HEI Name")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={heiId}
-              label="HEI"
+              label={t("HEI Name")}
               onChange={(e) => setHeiId(e.target.value)}
             >
               {heis &&
@@ -348,15 +358,13 @@ export default function Projects() {
               setHeiId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
-            disabled={
-              !project || !description || !category  || !heiId
-            }
+            disabled={!project || !description || !category || !heiId}
           >
-            Add
+            {t("Add")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -373,12 +381,14 @@ export default function Projects() {
         fullWidth={true}
         maxWidth="xs"
       >
-        <DialogTitle style={{ paddingBottom: 0 }}>Edit Project</DialogTitle>
+        <DialogTitle style={{ paddingBottom: 0 }}>
+          {t("Edit Project")}
+        </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label="Name"
+            label={t("Project Name")}
             type="text"
             value={project}
             onChange={(e) => setProject(e.target.value)}
@@ -389,7 +399,7 @@ export default function Projects() {
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
-              label="Description"
+              label={t("Description")}
               type="text"
               value={description}
               multiline
@@ -402,7 +412,7 @@ export default function Projects() {
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <FormLabel id="demo-controlled-radio-buttons-group">
-              Category
+              {t("Category")}
             </FormLabel>
             <RadioGroup
               row
@@ -414,27 +424,27 @@ export default function Projects() {
               <FormControlLabel
                 value="hardware"
                 control={<Radio />}
-                label="Hardware"
+                label={t("Hardware")}
               />
               <FormControlLabel
                 value="software"
                 control={<Radio />}
-                label="Software"
+                label={t("Software")}
               />
               <FormControlLabel
                 value="hybrid"
                 control={<Radio />}
-                label="Hybrid"
+                label={t("Hybrid")}
               />
             </RadioGroup>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">Scheme</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("Scheme")}</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={schemeId}
-              label="Country"
+              label={t("Scheme")}
               onChange={(e) => setSchemeId(e.target.value)}
             >
               {schemes &&
@@ -446,12 +456,14 @@ export default function Projects() {
             </Select>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">HEI</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {t("HEI Name")}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={heiId}
-              label="HEI"
+              label={t("HEI Name")}
               onChange={(e) => setHeiId(e.target.value)}
             >
               {heis &&
@@ -473,7 +485,7 @@ export default function Projects() {
               setHeiId("");
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             onClick={handleUpdate}
@@ -481,14 +493,14 @@ export default function Projects() {
               !project || !description || !category || !schemeId || !heiId
             }
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmationModal
         open={showDeleteModal}
-        message="Are you sure you want to delete this project?"
+        message={t("Are you sure you want to delete this project?")}
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />

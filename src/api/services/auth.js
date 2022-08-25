@@ -27,4 +27,15 @@ function registerUser(body) {
   });
 }
 
-export { loginUser, registerUser };
+function showUser() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await interceptor(API_endpoints.showUser, "GET");
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+export { loginUser, registerUser, showUser };
