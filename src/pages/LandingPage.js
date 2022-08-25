@@ -17,7 +17,7 @@ import EmblemLogo from "../images/MHRD_logo.png";
 import MainBG from "../images/mainBG.png";
 import Login from "./auth/Login";
 import LoginBox from "./LoginBox";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Link, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const pages = ["Products", "Pricing", "Blog"];
@@ -99,24 +99,50 @@ const LandingPage = () => {
       <Box
         maxWidth="xl"
         height={30}
+        component="div"
+        textAlign="center"
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           background: "#000",
         }}
       >
-        <Box>
-          <Typography variant="p" color="#fff">
-            About
-          </Typography>
-        </Box>
+        <Typography
+          variant="p"
+          color="#fff"
+          marginRight={5}
+          sx={{ cursor: "pointer" }}
+        >
+          About Us
+        </Typography>
+        <Typography
+          variant="p"
+          color="#fff"
+          marginRight={5}
+          sx={{ cursor: "pointer" }}
+        >
+          Organization
+        </Typography>
+        <Typography
+          variant="p"
+          color="#fff"
+          marginRight={5}
+          sx={{ cursor: "pointer" }}
+        >
+          UGC Bureaus
+        </Typography>
+        <Typography
+          variant="p"
+          color="#fff"
+          marginRight={5}
+          sx={{ cursor: "pointer" }}
+        >
+          Universities
+        </Typography>
       </Box>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Box
             component="img"
-            sx={{ height: 650, width: 1519, backgroundSize: "cover" }}
+            sx={{ height: 605, width: 1519, backgroundSize: "cover" }}
             src={MainBG}
           ></Box>
         </Grid>

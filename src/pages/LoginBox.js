@@ -6,13 +6,16 @@ import {
   TextField,
   Button,
   Typography,
-  Link,
   Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setStorage } from "../utils/localstorage-utils";
 import { AppContext } from "../context/Context";
 import { loginUser } from "../api/services/auth";
@@ -47,6 +50,7 @@ const LoginBox = () => {
       navigate("/profile");
     }
   };
+
   return (
     <Paper elevation={10} style={paperStyle}>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -71,6 +75,28 @@ const LoginBox = () => {
           required
           variant="standard"
         />
+        <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+          <InputLabel id="demo-simple-select-label">{"Role"}</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Role"
+          >
+            <MenuItem value={"super-admin"}>Super Admin</MenuItem>
+            <MenuItem value={"ugc-admin"}>UGC Admin</MenuItem>
+            <MenuItem value={"fa-admin"}>FA Admin</MenuItem>
+            <MenuItem value={"hei-admin"}>HEI Admin</MenuItem>
+            <MenuItem value={"hei-project-coordinator"}>
+              HEI Project Coordinator
+            </MenuItem>
+            <MenuItem value={"fa-project-coordinator"}>
+              FA Project Coordinator
+            </MenuItem>
+            <MenuItem value={"project-member"}>Project Member</MenuItem>
+            <MenuItem value={"university-admin"}>University Admin</MenuItem>
+            <MenuItem value={"hei-spoc"}>HEI SPOC</MenuItem>
+          </Select>
+        </FormControl>
         <FormControlLabel
           control={<Checkbox name="checkedB" />}
           label="Remember me"
@@ -86,11 +112,16 @@ const LoginBox = () => {
           Sign in
         </Button>
         <Typography>
-          <Link href="#">Forgot password ?</Link>
+          <Link href="#" to="forgot-password">
+            Forgot password ?
+          </Link>
         </Typography>
         <Typography>
           {" "}
-          Do you have an account ?<Link href="#">Sign Up</Link>
+          Do you have an account ?
+          <Link href="#" to="signup">
+            Sign Up
+          </Link>
         </Typography>
       </Box>
     </Paper>
