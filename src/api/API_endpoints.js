@@ -2,6 +2,7 @@ export const API_endpoints = {
   // auth
   loginUser: "/api/login",
   registerUser: "/api/register",
+  showUser: "/api/users",
   // countries
   getAllCountries: "/api/countries",
   addCountry: "/api/countries",
@@ -44,7 +45,7 @@ export const API_endpoints = {
   // schemes
   getAllSchemes: "/api/schemes",
   addScheme: "/api/schemes",
-  updateScheme : "/api/schemes",
+  updateScheme: "/api/schemes",
   deleteScheme: "/api/schemes",
   // transactions
   getAllTransactions: "/api/transactions",
@@ -67,4 +68,9 @@ export const API_endpoints = {
   addPhase: "/api/phases",
   updatePhase: "/api/phases",
   deletePhase: "/api/phases",
+  // spoc
+  getAllSpoc: "/api/spoc",
+  addSpoc: "/api/spoc",
+  updateSpoc: "/api/spoc",
+  deleteSpoc: "/api/spoc",
 };
