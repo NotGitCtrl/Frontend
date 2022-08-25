@@ -151,7 +151,7 @@ export default function Countries() {
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
-                    <IconButton
+                    {/* <IconButton
                       onClick={() => {
                         setShowDeleteModal(true);
                         setCountry(row.name);
@@ -159,7 +159,7 @@ export default function Countries() {
                       }}
                     >
                       <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    </IconButton> */}
                   </TableCell>
                 </TableRow>
               ))}

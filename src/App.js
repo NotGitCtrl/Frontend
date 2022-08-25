@@ -18,11 +18,13 @@ import Projects from "./pages/Projects";
 import Reports from "./pages/Reports";
 import InviteMember from "./pages/InviteMember";
 import ProjectDetail from "./pages/ProjectDetail";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route index element={<LandingPage />} />
         <Route path="/" element={<SignUpStepper />} />
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
