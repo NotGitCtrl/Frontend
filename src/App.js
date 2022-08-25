@@ -1,6 +1,5 @@
 import "./App.css";
 import SignUpStepper from "./Components/Stepper/Stepper";
-import Login from "./pages/auth/Login";
 import Profile from "./Components/Profile/Profile";
 import ForgotPass from "./pages/auth/ForgotPass";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -25,8 +24,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<LandingPage />} />
-        <Route path="/" element={<SignUpStepper />} />
-        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUpStepper />} />
+        {/* <Route path="login" element={<Login />} /> */}
         <Route path="profile" element={<Profile />} />
         <Route path="forgot-password" element={<ForgotPass />} />
         <Route path="invite-member" element={<InviteMember />} />
