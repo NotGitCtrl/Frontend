@@ -54,6 +54,7 @@ export default function ProjectDetail() {
     const response = await getProjectDetails(id);
     if (response.status === "success") {
       setProject(response.data);
+      console.log(response)
     }
   };
 
@@ -95,16 +96,16 @@ export default function ProjectDetail() {
             <Typography gutterBottom variant={"body1"}>
               {project.description}
             </Typography>
-            <Typography variant={"h6"}>
+            <Typography gutterBottom variant={"h6"}>
               Scheme: {project.scheme.name}
             </Typography>
             <Typography variant={"h6"}>
               Funding Agency: {project.fundingAgency.name}
             </Typography>
-            <Typography variant="h6">
+            <Typography gutterBottom variant="h6">
               HEI: {project.hei.map((hei) => hei.name)}
             </Typography>
-            <Typography variant={"h6"}>
+            <Typography gutterBottom variant={"h6"}>
               Created By:{" "}
               {project.createdBy.firstName + " " + project.createdBy.lastName}
             </Typography>

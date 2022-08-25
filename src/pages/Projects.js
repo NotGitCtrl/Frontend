@@ -30,9 +30,12 @@ import Select from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "../context/Context";
 
 export default function Projects() {
   const [projects, setProjects] = useState(undefined);
@@ -52,9 +55,12 @@ export default function Projects() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const { role } = useContext(AppContext);
+
   const fetchAllProjects = async () => {
     const response = await getAllProjects();
     if (response.status === "success") {
+      console.log(response)
       setProjects(response.data);
     }
   };
@@ -140,11 +146,12 @@ export default function Projects() {
         <Grid item>
           <h2>Projects</h2>
         </Grid>
-        <Grid item>
-          <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            Add Project
-          </Button>
-        </Grid>
+        { role==="fa-admin" && (
+            
+              <Button variant="contained" onClick={() => setShowAddModal(true)}>
+                Add Project
+              </Button>
+        )}
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: 30 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -152,6 +159,12 @@ export default function Projects() {
             <TableRow>
               <TableCell>Sr. No.</TableCell>
               <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Scheme</TableCell>
+              { role!=="hei-admin" && (
+                               <TableCell align="left">HEI</TableCell>
+                                
+                  )} 
+              
               <TableCell align="left">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -169,30 +182,53 @@ export default function Projects() {
                     {index + 1}.
                   </TableCell>
                   <TableCell align="left">
-                    <Link to={`/project-detail/${row._id}`}>{row.name}</Link>
+                    {row.name}
                   </TableCell>
                   <TableCell align="left">
-                    <IconButton
-                      onClick={() => {
-                        setShowEditModal(true);
-                        setProject(row.name);
-                        setDescription(row.description);
-                        setSelectedProjectId(row._id);
-                        setSchemeId(row.scheme);
-                        setHeiId(row.hei);
-                      }}
-                    >
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setShowDeleteModal(true);
-                        setProject(row.name);
-                        setSelectedProjectId(row._id);
-                      }}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
+                  {row.scheme.name}
+                  </TableCell>
+                  
+                  { (role==="fa-admin" || role==="super-admin")  && (
+                    <>
+                    <TableCell align="left">
+                      {row.hei.map((h, index)=>(
+                        h.name
+                      ))}
+                    </TableCell>
+                    </>
+                  )}
+                  <TableCell>
+                  <IconButton>
+                        <Link to={`/project-detail/${row._id}`}>  <RemoveRedEyeIcon color="primary" fontSize="small" />
+                        </Link> 
+                  </IconButton>
+                  
+                  { role==="fa-admin" && (
+                    <>
+                        <IconButton
+                          onClick={() => {
+                            setShowEditModal(true);
+                            setProject(row.name);
+                            setDescription(row.description);
+                            setSelectedProjectId(row._id);
+                            setSchemeId(row.scheme);
+                            setHeiId(row.hei);
+                          }}
+                        >
+                          <EditIcon fontSize="small" />
+                        </IconButton>
+
+                        <IconButton
+                          onClick={() => {
+                            setShowDeleteModal(true);
+                            setProject(row.name);
+                            setSelectedProjectId(row._id);
+                          }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>   
+                    </>                
+                  )} 
                   </TableCell>
                 </TableRow>
               ))}
