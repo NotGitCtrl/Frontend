@@ -66,6 +66,8 @@ export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
   const [languageAnchorEl, setLanguageAnchorEl] = useState(null);
   const isLanguageMenuOpen = Boolean(languageAnchorEl);
 
+  const role = getStorage("role");
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -87,7 +89,7 @@ export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
   const logoutUser = () => {
     clearStorage();
     setIsLoggedIn(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const profileMenuId = "primary-search-account-menu";
@@ -175,7 +177,30 @@ export default function AppBarComponent({ isDrawerOpen, setDrawerOpen }) {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            {t("Dashboard")}
+
+          {t(
+              role === "super-admin"
+                ? "Super Admin"
+                : role === "ugc-admin"
+                ? "UGC Admin"
+                : role === "fa-admin"
+                ? "FA Admin"
+                : role === "fa-project-coordinator"
+                ? "FA Project Coordinator"
+                : role === "hei-admin"
+                ? "HEI Admin"
+                : role === "hei-project-coordinator"
+                ? "HEI Project Coordinator"
+                : role === "project-member"
+                ? "Project Member"
+                : role === "university-admin"
+                ? "University Admin"
+                : role === "hei-spoc"
+                ? "HEI SPOC"
+                : "General"
+            ) +
+              " " +
+              t("Dashboard")}
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

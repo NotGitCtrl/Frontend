@@ -35,6 +35,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { AppContext } from "../context/Context";
 
 export default function ListPhases() {
   const { t } = useTranslation();
@@ -51,6 +53,7 @@ export default function ListPhases() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { id } = useParams();
+  const { role } = useContext(AppContext);
 
   const fetchAllPhases = async () => {
     const response = await getAllPhases(id);
@@ -122,12 +125,13 @@ export default function ListPhases() {
         <Grid item>
           <h2>{t("Phase")}</h2>
         </Grid>
+        { role==="hei-admin" && (
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
             {t("Add New Phase")}
           </Button>
         </Grid>
-      </Grid>
+        )}
       <TableContainer component={Paper} style={{ marginTop: 30 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -179,7 +183,6 @@ export default function ListPhases() {
           </TableBody>
         </Table>
       </TableContainer>
-
       <Dialog
         open={showAddModal}
         onClose={() => {
@@ -261,6 +264,7 @@ export default function ListPhases() {
           </Button>
         </DialogActions>
       </Dialog>
+      
 
       <Dialog
         open={showEditModal}
@@ -347,6 +351,7 @@ export default function ListPhases() {
         handleClose={() => setShowDeleteModal(false)}
         handleSuccess={handleDelete}
       />
+    </Grid>
     </>
   );
 }

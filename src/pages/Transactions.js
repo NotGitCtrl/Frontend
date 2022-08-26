@@ -6,6 +6,8 @@ import {
   addTransaction,
   updateTransaction,
   deleteTransaction,
+  successTransaction,
+  failureTransaction
 } from "../api/services/transactions";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -32,14 +34,62 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { useTranslation } from "react-i18next";
 
+function initializeRazorpay() {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+}
+
+// function makePayment(am) {
+//   // const res = await initializeRazorpay();
+//   //   if (!res) {
+//   //     alert("Razorpay SDK Failed to load");
+//   //     return;
+//   //   }
+//   var options = {
+//     key: "rzp_test_YachkhLLIjubdE",
+//     amount: 500,
+//     currency: "INR",
+//     name: "ADD_NAME",
+//     description: "Wallet Credit",
+//     image: "ADD_LOGO",
+//     retry: { enabled: true, max_count: 1 },
+//     send_sms_hash: true,
+//     prefill: {  },
+//     handler: function (response) {
+//       // anything you want to run after successful response
+//       console.log(response)
+//     },
+//     theme: {
+//       color: "rgba(3, 37, 27, 0.9)",
+//     },
+//   };
+//   var rzp1 = new window.Razorpay(options);
+//   rzp1.on("payment.failed", function (response) {
+//     alert("Some Error");
+//   });
+//   rzp1.open();
+// }
+
+
 export default function Transactions() {
   const { t } = useTranslation();
 
   const [transactions, setTransactions] = useState(undefined);
   const [transaction, setTransaction] = useState("");
   const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(null);
   const [utr, setUtr] = useState("");
+
+  const [status, setStatus] = useState("");
 
   const [projects, setProjects] = useState(undefined);
   const [projectId, setProjectId] = useState("");
@@ -49,12 +99,47 @@ export default function Transactions() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+
+
   const fetchAllTransactions = async () => {
     const response = await getAllTransactions();
     if (response.status === "success") {
       setTransactions(response.data);
     }
   };
+
+
+  const makePayment = async () => {
+    var options = {
+      key: "rzp_test_YachkhLLIjubdE",
+      amount: amount *100,
+      currency: "INR",
+      name: "ADD_NAME",
+      description: "Wallet Credit",
+      image: "ADD_LOGO",
+      retry: { enabled: true, max_count: 1 },
+      send_sms_hash: true,
+      prefill: {  },
+      handler: function (response) {
+        console.log(response)
+        if(response.razorpay_payment_id){
+          setStatus("Paid")
+          handleAdd();
+        }else{
+          setStatus("Payment Failure")
+          handleAdd();
+        }
+      },
+      theme: {
+        color: "rgba(3, 37, 27, 0.9)",
+      },
+    };
+    var rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      alert("Some Error");
+    });
+    rzp1.open();
+  }
 
   const fetchAllProjects = async () => {
     const response = await getAllProjects();
@@ -66,10 +151,9 @@ export default function Transactions() {
   const handleAdd = async () => {
     const response = await addTransaction({
       name: transaction,
-      description: description,
-      amount: amount,
-      utr: utr,
-      project: projectId,
+      description,
+      amount,
+      payment_gateway_status: status
     });
     if (response.status === "success") {
       setTransaction("");
@@ -144,6 +228,8 @@ export default function Transactions() {
             <TableRow>
               <TableCell>{t("Sr. No.")}</TableCell>
               <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Amount")}</TableCell>
+              <TableCell align="left">{t("Status")}</TableCell>
               <TableCell align="left">{t("Actions")}</TableCell>
             </TableRow>
           </TableHead>
@@ -161,6 +247,8 @@ export default function Transactions() {
                     {index + 1}.
                   </TableCell>
                   <TableCell align="left">{row.name}</TableCell>
+                  <TableCell align="left">Rs. {row.amount}</TableCell>
+                  <TableCell align="left"> {row.payment_gateway_status}</TableCell>
                   <TableCell align="left">
                     <IconButton
                       onClick={() => {
@@ -256,7 +344,7 @@ export default function Transactions() {
               size="small"
             />
           </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
+          {/* <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <TextField
               autoFocus
               label={t("UTR")}
@@ -286,7 +374,7 @@ export default function Transactions() {
                   </MenuItem>
                 ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
         </DialogContent>
         <DialogActions>
           <Button
@@ -302,12 +390,12 @@ export default function Transactions() {
             {t("Cancel")}
           </Button>
           <Button
-            onClick={handleAdd}
+            onClick={makePayment}
             disabled={
-              !transaction || !description || !projectId || !amount || !utr
+              !transaction || !amount
             }
           >
-            {t(" Add")}
+            {t("Pay Now")}
           </Button>
         </DialogActions>
       </Dialog>

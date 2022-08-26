@@ -73,4 +73,10 @@ export const API_endpoints = {
   addSpoc: "/api/spoc",
   updateSpoc: "/api/spoc",
   deleteSpoc: "/api/spoc",
+  // project proposal
+  getAllProposals: "/api/project-proposals",
+  addProposal: "/api/project-proposals",
+  updateProposal: "/api/project-proposals",
+  deleteProposal: "/api/project-proposals",
+  getProposalDetails: "/api/project-proposals",
 };

@@ -26,6 +26,35 @@ function getProjectDetails(id) {
   });
 }
 
+function getProjectDetailsRabbit(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await interceptor(
+        API_endpoints.getProjectDetails + "/" + id + "/getProjects",
+        "GET"
+      );
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+
+function approveProject(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await interceptor(
+        API_endpoints.getProjectDetails + "/" + id + "/approve",
+        "POST"
+      );
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 function addProject(body) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -76,4 +105,6 @@ export {
   updateProject,
   deleteProject,
   getProjectDetails,
+  getProjectDetailsRabbit,
+  approveProject
 };

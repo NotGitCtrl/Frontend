@@ -7,6 +7,8 @@ import {
   addProject,
   updateProject,
   deleteProject,
+  getProjectDetailsRabbit,
+  approveProject
 } from "../api/services/projects";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -37,6 +39,8 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/Context";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { getProjectDetails } from "../api/services/projects";
 
 export default function Projects() {
   const { t } = useTranslation();
@@ -53,6 +57,8 @@ export default function Projects() {
   const [heis, setHeis] = useState(undefined);
   const [heiId, setHeiId] = useState("");
 
+  const { id } = useParams();
+
   const [selectedProjectId, setSelectedProjectId] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -60,8 +66,16 @@ export default function Projects() {
 
   const { role } = useContext(AppContext);
 
+//   const fetchProjectDetails = async (id) => {
+//     const response = await getProjectDetails(id);
+//     if (response.status === "success") {
+//       setProject(response.data);
+//       console.log(response)
+//     }
+//   };
+
   const fetchAllProjects = async () => {
-    const response = await getAllProjects();
+    const response = await getProjectDetailsRabbit(id);
     if (response.status === "success") {
       console.log(response)
       setProjects(response.data);
@@ -79,6 +93,13 @@ export default function Projects() {
     const response = await getAllHeis();
     if (response.status === "success") {
       setHeis(response.data);
+    }
+  };
+
+  const acceptProject = async () => {
+    const response = await approveProject(selectedProjectId);
+    if (response.status === "success") {
+        fetchAllProjects();
     }
   };
 
@@ -147,15 +168,14 @@ export default function Projects() {
         alignItems="center"
       >
         <Grid item>
-          <h2>{t("Project")}</h2>
+          <h2>{t("HEI Submissions - project schema")}</h2>
         </Grid>
 
         <Grid item>
-          { role==="fa-admin" && (
+          { role==="hei-admin" && (
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            {t("Add New Project")}
+            {t("Add Submission")}
           </Button>
-      
            )}
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: 30 }}>
@@ -163,12 +183,12 @@ export default function Projects() {
           <TableHead>
             <TableRow>
               <TableCell>{t("Sr. No.")}</TableCell>
-              <TableCell align="left">{t("Name")}</TableCell>
-              <TableCell align="left">Scheme</TableCell>
-              { role!=="hei-admin" && (
-                               <TableCell align="left">HEI</TableCell>
-                                
-                  )} 
+              <TableCell align="left">{t("Title")}</TableCell>
+              <TableCell align="left">HEI</TableCell>
+              <TableCell align="left">Description</TableCell>
+              <TableCell align="left">Status</TableCell>
+              
+              {/* <TableCell align="left">Rank</TableCell> */}
               
               <TableCell align="left">{t("Actions")}</TableCell>
 
@@ -191,20 +211,33 @@ export default function Projects() {
                     {row.name}
                   </TableCell>
                   <TableCell align="left">
-                  
+                  {row.hei.name}
                   </TableCell>
-                  
-                  { (role==="fa-admin" || role==="super-admin")  && (
-                    <>
-                    <TableCell align="left">
-                      {row.hei.name}
-                    </TableCell>
-                    </>
-                  )}
+                  <TableCell align="left" width={300}>
+                    {row.description}
+                  </TableCell>
+                  <TableCell align="left">
+                    {row.status}
+                  </TableCell>
                   <TableCell>
                   <IconButton>
-                        <Link to={`/project-detail/${row._id}`}>  <RemoveRedEyeIcon color="primary" fontSize="small" />
+                  <Link to={`/project-detail/${row._id}`}> 
+                    <Button variant="contained">   
+                            {t("View")}
+                        </Button> 
                         </Link> 
+
+                        
+                    <Button onClick={()=>{
+                        setSelectedProjectId(row._id);
+                        acceptProject()
+                    }} variant="contained">   
+                            {t("Accept")}
+                        </Button> 
+                        
+                    <Button variant="contained">   
+                            {t("Reject")}
+                        </Button> 
                   </IconButton>
                   
                   { role==="fa-admin" && (

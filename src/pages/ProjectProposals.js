@@ -3,11 +3,11 @@ import ConfirmationModal from "../Components/common/ConfirmationModal";
 import { getAllSchemes } from "../api/services/schemes";
 import { getAllHeis } from "../api/services/hei";
 import {
-  getAllProjects,
-  addProject,
-  updateProject,
-  deleteProject,
-} from "../api/services/projects";
+  getAllProposals,
+  addProposal,
+  updateProposal,
+  deleteProposal,
+} from "../api/services/proposals";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -45,6 +45,7 @@ export default function Projects() {
 
   const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
+  const [link, setLink] = useState("");
   const [category, setCategory] = useState("hardware");
 
   const [schemes, setSchemes] = useState(undefined);
@@ -61,7 +62,7 @@ export default function Projects() {
   const { role } = useContext(AppContext);
 
   const fetchAllProjects = async () => {
-    const response = await getAllProjects();
+    const response = await getAllProposals();
     if (response.status === "success") {
       console.log(response)
       setProjects(response.data);
@@ -83,7 +84,7 @@ export default function Projects() {
   };
 
   const handleAdd = async () => {
-    const response = await addProject({
+    const response = await addProposal({
       name: project,
       description: description,
       category: category,
@@ -101,7 +102,7 @@ export default function Projects() {
   };
 
   const handleUpdate = async () => {
-    const response = await updateProject(selectedProjectId, {
+    const response = await updateProposal(selectedProjectId, {
       name: project,
       scheme: schemeId,
       description: description,
@@ -120,7 +121,7 @@ export default function Projects() {
   };
 
   const handleDelete = async () => {
-    const response = await deleteProject(selectedProjectId);
+    const response = await deleteProposal(selectedProjectId);
     if (response.status === "success") {
       setProject("");
       setDescription("");
@@ -147,13 +148,13 @@ export default function Projects() {
         alignItems="center"
       >
         <Grid item>
-          <h2>{t("Project")}</h2>
+          <h2>{t("Problem Statements")}</h2>
         </Grid>
 
         <Grid item>
           { role==="fa-admin" && (
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            {t("Add New Project")}
+            {t("Add New Problem Statement")}
           </Button>
       
            )}
@@ -164,11 +165,8 @@ export default function Projects() {
             <TableRow>
               <TableCell>{t("Sr. No.")}</TableCell>
               <TableCell align="left">{t("Name")}</TableCell>
+              <TableCell align="left">{t("Description")}</TableCell>
               <TableCell align="left">Scheme</TableCell>
-              { role!=="hei-admin" && (
-                               <TableCell align="left">HEI</TableCell>
-                                
-                  )} 
               
               <TableCell align="left">{t("Actions")}</TableCell>
 
@@ -190,25 +188,22 @@ export default function Projects() {
                   <TableCell align="left">
                     {row.name}
                   </TableCell>
+                  <TableCell align="left" width={300}>
+                    {row.description}
+                  </TableCell>
                   <TableCell align="left">
-                  
+                  {row.scheme.name}
                   </TableCell>
                   
-                  { (role==="fa-admin" || role==="super-admin")  && (
-                    <>
-                    <TableCell align="left">
-                      {row.hei.name}
-                    </TableCell>
-                    </>
-                  )}
                   <TableCell>
-                  <IconButton>
-                        <Link to={`/project-detail/${row._id}`}>  <RemoveRedEyeIcon color="primary" fontSize="small" />
-                        </Link> 
-                  </IconButton>
+                  
                   
                   { role==="fa-admin" && (
                     <>
+                    <IconButton>
+                        <Link to={`/solution-list/${row._id}`}>  <RemoveRedEyeIcon color="primary" fontSize="small" />
+                        </Link> 
+                  </IconButton>
                         <IconButton
                           onClick={() => {
                             setShowEditModal(true);
@@ -216,7 +211,7 @@ export default function Projects() {
                             setDescription(row.description);
                             setSelectedProjectId(row._id);
                             setSchemeId(row.scheme);
-                            setHeiId(row.hei);
+                            setLink(row.link);
                           }}
                         >
                           <EditIcon fontSize="small" />
@@ -231,6 +226,17 @@ export default function Projects() {
                         >
                           <DeleteIcon fontSize="small" />
                         </IconButton>   
+                    </>                
+                  )} 
+
+                { role==="hei-admin" && (
+                    <>
+                    <Link to={`/dashboard/projects/${row._id}`}> 
+                    <Button variant="contained">   
+                            {t("Submit Solution")}
+                        </Button> 
+                        </Link> 
+                        
                     </>                
                   )} 
                   </TableCell>
@@ -253,13 +259,13 @@ export default function Projects() {
         maxWidth="xs"
       >
         <DialogTitle style={{ paddingBottom: 0 }}>
-          {t("Add New Project")}
+          {t("Add New Problem Statement")}
         </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label={t("Project Name")}
+            label={t("Title")}
             type="text"
             value={project}
             onChange={(e) => setProject(e.target.value)}
@@ -282,32 +288,18 @@ export default function Projects() {
             />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <FormLabel id="demo-controlled-radio-buttons-group">
-              {t("Category")}
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="demo-controlled-radio-buttons-group"
-              name="controlled-radio-buttons-group"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <FormControlLabel
-                value="hardware"
-                control={<Radio />}
-                label={t("Hardware")}
-              />
-              <FormControlLabel
-                value="software"
-                control={<Radio />}
-                label={t("Software")}
-              />
-              <FormControlLabel
-                value="hybrid"
-                control={<Radio />}
-                label={t("Hybrid")}
-              />
-            </RadioGroup>
+          <TextField
+              autoFocus
+              label={t("Link")}
+              type="text"
+              value={link}
+              multiline
+              rows={4}
+              onChange={(e) => setLink(e.target.value)}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
             <InputLabel id="demo-simple-select-label">{t("Scheme")}</InputLabel>
@@ -326,25 +318,6 @@ export default function Projects() {
                 ))}
             </Select>
           </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">
-              {t("HEI Name")}
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={heiId}
-              label={t("HEI Name")}
-              onChange={(e) => setHeiId(e.target.value)}
-            >
-              {heis &&
-                heis.map((hei) => (
-                  <MenuItem key={hei._id} value={hei._id}>
-                    {hei.name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button
@@ -352,15 +325,15 @@ export default function Projects() {
               setShowAddModal(false);
               setProject("");
               setDescription("");
+              setLink("");
               setSchemeId("");
-              setHeiId("");
             }}
           >
             {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
-            disabled={!project || !description || !category || !heiId}
+            disabled={!project || !description }
           >
             {t("Add")}
           </Button>
@@ -372,9 +345,9 @@ export default function Projects() {
         onClose={() => {
           setShowEditModal(false);
           setProject("");
-          setDescription("");
-          setSchemeId("");
-          setHeiId("");
+              setDescription("");
+              setLink("");
+              setSchemeId("");
         }}
         fullWidth={true}
         maxWidth="xs"

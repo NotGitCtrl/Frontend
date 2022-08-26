@@ -25,6 +25,8 @@ import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+
+
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -72,6 +74,7 @@ export default function DrawerComponent({
   const universities = t("University");
   const fundingAgency = t("Funding Agency");
   const ugcAdmin = t("University Admin");
+ 
 
   const faAdminOptions = [
     {
@@ -116,6 +119,12 @@ export default function DrawerComponent({
       title: profile,
       link: "/profile",
     },
+    {
+      id: 8,
+      icon: <AccountTreeIcon />,
+      title: "Problem Statements",
+      link: "/dashboard/proposals",
+    },
   ];
 
   const faCoordinatorOptions = [
@@ -148,6 +157,12 @@ export default function DrawerComponent({
       icon: <PersonIcon />,
       title: profile,
       link: "/profile",
+    },
+    {
+      id: 8,
+      icon: <AccountTreeIcon />,
+      title: "Problem Statements",
+      link: "/dashboard/proposals",
     },
   ];
 
@@ -193,6 +208,12 @@ export default function DrawerComponent({
       icon: <PersonIcon />,
       title: profile,
       link: "/dashboard/profile",
+    },
+    {
+      id: 8,
+      icon: <AccountTreeIcon />,
+      title: "Problem Statements",
+      link: "/dashboard/proposals",
     },
   ];
 

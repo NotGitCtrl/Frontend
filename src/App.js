@@ -18,6 +18,9 @@ import Reports from "./pages/Reports";
 import InviteMember from "./pages/InviteMember";
 import ProjectDetail from "./pages/ProjectDetail";
 import LandingPage from "./pages/LandingPage";
+import ProjectProposal from "./pages/ProjectProposals";
+import SolutionList from "./pages/FAViewSolutions";
+import SubmitSolution from "./pages/HeiSubmitSolution";
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
         <Route path="forgot-password" element={<ForgotPass />} />
         <Route path="invite-member" element={<InviteMember />} />
         <Route path="/project-detail/:id" element={<ProjectDetail />} />
+        <Route path="/solution-list/:id" element={<SolutionList />} />
+        <Route path="/dashboard/projects/:id" element={<SubmitSolution />} />
 
         <Route path="/dashboard">
           <Route path="countries" element={<Countries />} />
@@ -41,6 +46,8 @@ function App() {
           <Route path="transactions" element={<Transactions />} />
           <Route path="phases" element={<Phases />} />
           <Route path="projects" element={<Projects />} />
+          <Route path="proposals" element={<ProjectProposal />} />
+          
           <Route path="reports" element={<Reports />} />
         </Route>
 

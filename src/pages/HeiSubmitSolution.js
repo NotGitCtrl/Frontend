@@ -7,6 +7,7 @@ import {
   addProject,
   updateProject,
   deleteProject,
+  getProjectDetailsRabbit
 } from "../api/services/projects";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -37,6 +38,10 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/Context";
 import { useTranslation } from "react-i18next";
+import { Input } from "@mui/material";
+
+import { useParams } from "react-router-dom";
+import { getProjectDetails } from "../api/services/projects";
 
 export default function Projects() {
   const { t } = useTranslation();
@@ -49,7 +54,7 @@ export default function Projects() {
 
   const [schemes, setSchemes] = useState(undefined);
   const [schemeId, setSchemeId] = useState("");
-
+  const [docs, setDocs] = useState(undefined);
   const [heis, setHeis] = useState(undefined);
   const [heiId, setHeiId] = useState("");
 
@@ -58,10 +63,12 @@ export default function Projects() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const { id } = useParams();
+
   const { role } = useContext(AppContext);
 
   const fetchAllProjects = async () => {
-    const response = await getAllProjects();
+    const response = await getProjectDetailsRabbit(id);
     if (response.status === "success") {
       console.log(response)
       setProjects(response.data);
@@ -87,14 +94,11 @@ export default function Projects() {
       name: project,
       description: description,
       category: category,
-      scheme: schemeId,
-      hei: heiId,
+      projectProposal: id
     });
     if (response.status === "success") {
       setProject("");
       setDescription("");
-      setSchemeId("");
-      setHeiId("");
       setShowAddModal(false);
       fetchAllProjects();
     }
@@ -147,15 +151,14 @@ export default function Projects() {
         alignItems="center"
       >
         <Grid item>
-          <h2>{t("Project")}</h2>
+          <h2>{t("Proposal Submission")}</h2>
         </Grid>
 
         <Grid item>
-          { role==="fa-admin" && (
+          { role==="hei-admin" && (
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            {t("Add New Project")}
+            {t("Add Proposal")}
           </Button>
-      
            )}
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: 30 }}>
@@ -246,20 +249,18 @@ export default function Projects() {
           setShowAddModal(false);
           setProject("");
           setDescription("");
-          setSchemeId("");
-          setHeiId("");
         }}
         fullWidth={true}
         maxWidth="xs"
       >
         <DialogTitle style={{ paddingBottom: 0 }}>
-          {t("Add New Project")}
+          {t("Add New Proposal")}
         </DialogTitle>
         <DialogContentText></DialogContentText>
         <DialogContent>
           <TextField
             autoFocus
-            label={t("Project Name")}
+            label={t("Title")}
             type="text"
             value={project}
             onChange={(e) => setProject(e.target.value)}
@@ -310,40 +311,15 @@ export default function Projects() {
             </RadioGroup>
           </FormControl>
           <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">{t("Scheme")}</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={schemeId}
-              label={t("Scheme")}
-              onChange={(e) => setSchemeId(e.target.value)}
-            >
-              {schemes &&
-                schemes.map((scheme) => (
-                  <MenuItem key={scheme._id} value={scheme._id}>
-                    {scheme.name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth size="small" sx={{ mt: 3 }}>
-            <InputLabel id="demo-simple-select-label">
-              {t("HEI Name")}
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={heiId}
-              label={t("HEI Name")}
-              onChange={(e) => setHeiId(e.target.value)}
-            >
-              {heis &&
-                heis.map((hei) => (
-                  <MenuItem key={hei._id} value={hei._id}>
-                    {hei.name}
-                  </MenuItem>
-                ))}
-            </Select>
+            <Input
+              autoFocus
+              type="file"
+              inputProps={{ multiple: true }}
+              onChange={(e) => setDocs(e.target.files)}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
           </FormControl>
         </DialogContent>
         <DialogActions>
@@ -352,15 +328,13 @@ export default function Projects() {
               setShowAddModal(false);
               setProject("");
               setDescription("");
-              setSchemeId("");
-              setHeiId("");
             }}
           >
             {t("Cancel")}
           </Button>
           <Button
             onClick={handleAdd}
-            disabled={!project || !description || !category || !heiId}
+            disabled={!project || !description }
           >
             {t("Add")}
           </Button>

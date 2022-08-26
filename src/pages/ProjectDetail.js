@@ -106,19 +106,15 @@ export default function ProjectDetail() {
               <Typography gutterBottom variant={"body1"}>
                 {project.description}
               </Typography>
-              <Typography variant={"h6"}>
-                Scheme: {project.scheme.name}
-              </Typography>
-              <Typography variant={"h6"}>
-                Funding Agency: {project.fundingAgency.name}
-              </Typography>
+              
+              
               <Typography variant="h6">
-                HEI: {project.hei.map((hei) => hei.name)}
+                HEI: {project.hei.name}
               </Typography>
-              <Typography variant={"h6"}>
+              {/* <Typography variant={"h6"}>
                 Created By:{" "}
                 {project.createdBy.firstName + " " + project.createdBy.lastName}
-              </Typography>
+              </Typography> */}
             </>
           )}
         </TabPanel>
@@ -129,45 +125,7 @@ export default function ProjectDetail() {
           <ListReports />
         </TabPanel>
       </Box>
-      <TabPanel value={value} index={0}>
-        {project.name && (
-          <>
-          <Grid width="50%" sm={8}>
-              <Typography gutterBottom variant={"h4"}> {project.name}</Typography>
-          </Grid>
-          <Grid sm={4}>
-              <Chip label={project.category} color="success" variant="outlined" />
-          </Grid>
-          
-            <Typography gutterBottom variant={"h6"}>
-              Description
-            </Typography>
-            <Typography gutterBottom variant={"body1"}>
-              {project.description}
-            </Typography>
-            <Typography gutterBottom variant={"h6"}>
-              Scheme: {project.scheme.name}
-            </Typography>
-            <Typography variant={"h6"}>
-              Funding Agency: {project.fundingAgency.name}
-            </Typography>
-            <Typography gutterBottom variant="h6">
-              HEI: {project.hei.map((hei) => hei.name)}
-            </Typography>
-            <Typography gutterBottom variant={"h6"}>
-              Created By:{" "}
-              {project.createdBy.firstName + " " + project.createdBy.lastName}
-            </Typography>
-          </>
-        )}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ListPhases />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <ListReports />
-      </TabPanel>
-    </Box>
+      
     </DashboardWrapper>
   );
 }

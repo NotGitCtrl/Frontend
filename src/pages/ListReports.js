@@ -33,6 +33,8 @@ import DashboardWrapper from "../Components/common/DashboardWrapper";
 import { Input } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { AppContext } from "../context/Context";
 
 export default function ListReports() {
   const { t } = useTranslation();
@@ -46,6 +48,8 @@ export default function ListReports() {
   const { id } = useParams();
 
   const [docs, setDocs] = useState(undefined);
+
+  const { role } = useContext(AppContext);
 
   const [selectedReportId, setSelectedReportId] = useState("");
 
@@ -135,11 +139,13 @@ export default function ListReports() {
         <Grid item>
           <h2>{t("Report")}</h2>
         </Grid>
+        { role==="hei-admin" && (
         <Grid item>
           <Button variant="contained" onClick={() => setShowAddModal(true)}>
-            {t("Add New Report")}
+            {t("Add Report")}
           </Button>
         </Grid>
+        )}
       </Grid>
       <TableContainer component={Paper} style={{ marginTop: 30 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
