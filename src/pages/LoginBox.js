@@ -47,7 +47,7 @@ const LoginBox = () => {
       setStorage("role", response.data.role);
       setStorage("firstName", response.data.firstName);
       setStorage("lastName", response.data.lastName);
-      navigate("/profile");
+      navigate("/dashboard/projects");
     }
   };
 

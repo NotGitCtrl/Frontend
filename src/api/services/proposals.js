@@ -1,11 +1,22 @@
 import interceptor from "../interceptor";
 import { API_endpoints } from "../API_endpoints";
 
-function getAllTransactions() {
+function getAllProposals() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await interceptor(API_endpoints.getAllProposals, "GET");
+      resolve(response);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+function getProposalDetails(id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.getAllTransactions,
+        API_endpoints.getProposalDetails + "/" + id,
         "GET"
       );
       resolve(response);
@@ -15,11 +26,11 @@ function getAllTransactions() {
   });
 }
 
-function addTransaction(body) {
+function addProposal(body) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.addTransaction,
+        API_endpoints.addProposal,
         "POST",
         body
       );
@@ -30,13 +41,11 @@ function addTransaction(body) {
   });
 }
 
-
-
-function updateTransaction(id, body) {
+function updateProposal(id, body) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.updateTransaction + "/" + id,
+        API_endpoints.updateProposal + "/" + id,
         "PUT",
         body
       );
@@ -47,41 +56,11 @@ function updateTransaction(id, body) {
   });
 }
 
-function successTransaction(id, body) {
+function deleteProposal(id) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await interceptor(
-        API_endpoints.updateTransaction + "/" + id + "/success",
-        "POST",
-        body
-      );
-      resolve(response);
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-function failureTransaction(id, body) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await interceptor(
-        API_endpoints.updateTransaction + "/" + id + "/failure",
-        "POST",
-        body
-      );
-      resolve(response);
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-function deleteTransaction(id) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await interceptor(
-        API_endpoints.deleteTransaction + "/" + id,
+        API_endpoints.deleteProposal + "/" + id,
         "DELETE"
       );
       resolve(response);
@@ -92,8 +71,9 @@ function deleteTransaction(id) {
 }
 
 export {
-  getAllTransactions,
-  addTransaction,
-  updateTransaction,
-  deleteTransaction,
+  getAllProposals,
+  addProposal,
+  updateProposal,
+  deleteProposal,
+  getProposalDetails,
 };
